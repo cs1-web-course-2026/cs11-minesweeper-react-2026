@@ -1,4 +1,4 @@
-# CS-31 Minesweeper Game - React
+# CS-11 Minesweeper Game - React
 
 A React-based implementation of the classic Minesweeper game built with Vite for fast development and hot module replacement.
 
@@ -79,4 +79,4 @@ src/
 
 ## License
 
-This project is for educational purposes as part of CS-31 coursework.
+This project is for educational purposes as part of CS-11 coursework.

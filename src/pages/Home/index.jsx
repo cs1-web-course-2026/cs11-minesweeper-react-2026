@@ -12,7 +12,7 @@ function Home() {
           <br />with React
         </h1>
         <p className={styles.heroSubtitle}>
-          A hands-on React lab for CS-12 students. Implement the classic puzzle game
+          A hands-on React lab for CS-11 students. Implement the classic puzzle game
           using hooks, state management, and modern component architecture.
         </p>
         <div className={styles.heroActions}>

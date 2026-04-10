@@ -51,7 +51,7 @@ function Layout() {
       </main>
 
       <footer className={styles.layoutFooter}>
-        <p>© 2026 CS-12 Minesweeper Lab. Built with React &amp; Vite.</p>
+        <p>© 2026 CS-11 Minesweeper Lab. Built with React &amp; Vite.</p>
       </footer>
     </div>
   )
