@@ -1,4 +1,5 @@
 import styles from './Game.module.css'
+import StelmakhIvan from '../StelmakhIvan'
 
 const STATUS_CLASS = {
   'Complete': styles.statusComplete,
@@ -21,6 +22,16 @@ const CARD_STATUS_CLASS = {
 function Game() {
   // Add your implementations here by editing this array
   const implementations = [
+    {
+      id: 15,
+      title: "Ivan's Minesweeper",
+      description: "Stelmakh Ivan's implementation of Minesweeper with simple design and 10x10 field.",
+      author: "Stelmakh Ivan",
+      link: "/stelmakh-ivan",
+      difficulty: "Normal",
+      status: "Complete"
+    },
+
     {
       id: 1,
       title: "Mock Minesweeper Game",
