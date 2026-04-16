@@ -42,55 +42,59 @@ const Minesweeper = () => {
 
     const handleCellClick = (r, c) => {
         if (status !== GAME_STATUS.PROCESS) return;
-        if (!timerActive) setTimerActive(true);
-
-        const newField = field.map(row => row.map(cell => ({ ...cell })));
         
-        if (newField[r][c].state !== CELL_STATE.CLOSED) return;
+        setField(prevField => {
+            const newField = prevField.map(row => row.map(cell => ({ ...cell })));
+            const targetCell = newField[r][c];
 
-        if (newField[r][c].type === CELL_TYPE.MINE) {
-            newField[r][c].state = CELL_STATE.OPENED;
-            handleEndGame(GAME_STATUS.LOSE, newField);
-            return;
-        }
+            if (targetCell.state !== CELL_STATE.CLOSED) return prevField;
 
-        const reveal = (row, col) => {
-            if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
-            const cell = newField[row][col];
-            if (cell.state !== CELL_STATE.CLOSED) return;
+            if (!timerActive) setTimerActive(true);
 
-            cell.state = CELL_STATE.OPENED;
-            if (cell.neighborMines === 0) {
-                for (let ro = -1; ro <= 1; ro++) {
-                    for (let co = -1; co <= 1; co++) {
-                        reveal(row + ro, col + co);
+            if (targetCell.type === CELL_TYPE.MINE) {
+                handleEndGame(GAME_STATUS.LOSE, newField);
+                return newField;
+            }
+
+            const reveal = (row, col) => {
+                if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
+                const cell = newField[row][col];
+                if (cell.state !== CELL_STATE.CLOSED) return;
+
+                cell.state = CELL_STATE.OPENED;
+                if (cell.neighborMines === 0) {
+                    for (let ro = -1; ro <= 1; ro++) {
+                        for (let co = -1; co <= 1; co++) {
+                            reveal(row + ro, col + co);
+                        }
                     }
                 }
-            }
-        };
+            };
 
-        reveal(r, c);
-        setField(newField);
-        checkWin(newField);
+            reveal(r, c);
+            checkWin(newField);
+            return newField;
+        });
     };
 
     const handleRightClick = (r, c) => {
         if (status !== GAME_STATUS.PROCESS) return;
-        const newField = [...field];
-        const cell = { ...newField[r][c] };
-
-        if (cell.state === CELL_STATE.OPENED) return;
-
-        if (cell.state === CELL_STATE.FLAGGED) {
-            cell.state = CELL_STATE.CLOSED;
-            setFlagsUsed(prev => prev - 1);
-        } else if (flagsUsed < MINES) {
-            cell.state = CELL_STATE.FLAGGED;
-            setFlagsUsed(prev => prev + 1);
-        }
         
-        newField[r][c] = cell;
-        setField(newField);
+        setField(prevField => {
+            const newField = prevField.map(row => row.map(cell => ({ ...cell })));
+            const cell = newField[r][c];
+
+            if (cell.state === CELL_STATE.OPENED) return prevField;
+
+            if (cell.state === CELL_STATE.FLAGGED) {
+                cell.state = CELL_STATE.CLOSED;
+                setFlagsUsed(prev => prev - 1);
+            } else if (flagsUsed < MINES) {
+                cell.state = CELL_STATE.FLAGGED;
+                setFlagsUsed(prev => prev + 1);
+            }
+            return newField;
+        });
     };
 
     const checkWin = (currentField) => {
@@ -104,15 +108,11 @@ const Minesweeper = () => {
     const handleEndGame = (result, finalField) => {
         setStatus(result);
         setTimerActive(false);
-        const revealedField = finalField.map(row => row.map(cell => {
+        
+        setField(finalField.map(row => row.map(cell => {
             if (cell.type === CELL_TYPE.MINE) return { ...cell, state: CELL_STATE.OPENED };
             return cell;
-        }));
-        setField(revealedField);
-        
-        setTimeout(() => {
-            alert(result === GAME_STATUS.WIN ? `🎉 Перемога! Час: ${formatTime(time)}` : '💥 Бум! Ви програли.');
-        }, 300);
+        })));
     };
 
     return (
@@ -127,6 +127,16 @@ const Minesweeper = () => {
                         {status === GAME_STATUS.LOSE ? '😵' : status === GAME_STATUS.WIN ? '😎' : '🙂'}
                     </div>
                 </div>
+                
+                {status !== GAME_STATUS.PROCESS && (
+                    <div className={styles.statusMessage}>
+                        {status === GAME_STATUS.WIN ? 
+                            `🎉 Перемога! Час: ${formatTime(time)}` : 
+                            '💥 Бум! Ви програли.'
+                        }
+                        <button onClick={initGame} className={styles.restartBtn}>Спробувати ще раз</button>
+                    </div>
+                )}
 
                 <Board field={field} onCellClick={handleCellClick} onCellRightClick={handleRightClick} />
 
