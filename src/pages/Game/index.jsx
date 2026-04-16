@@ -56,6 +56,15 @@ function Game() {
       link: "#",
       difficulty: "Advanced",
       status: "Planning"
+    },
+    {
+      id: 5,
+      title: "Minesweeper Game",
+      description: "Моя реалізація гри Сапер з використанням HTML, CSS та JavaScript.",
+      author: "Sophia Yanchuk",
+      link: "/yanchuk-sofia",
+      difficulty: "Beginner",
+      status: "Complete"
     }
   ]
 
