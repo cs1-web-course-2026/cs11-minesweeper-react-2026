@@ -6,7 +6,7 @@ import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/cs11-minesweeper-react-2026">
       <App />
     </BrowserRouter>
   </StrictMode>,
