@@ -30,8 +30,8 @@ const Cell = ({ data, onClick, onRightClick, row, col }) => {
       className={classNames}
       aria-label={label}
       onClick={onClick}
-      onContextMenu={(e) => {
-        e.preventDefault();
+      onContextMenu={(event) => {
+        event.preventDefault();
         onRightClick();
       }}
     >

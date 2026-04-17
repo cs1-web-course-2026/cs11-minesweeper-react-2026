@@ -2,21 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { GAME_STATUS } from '../constants';
 import styles from './Timer.module.css';
 
-const Timer = ({ status }) => {
+const Timer = ({ status, gameId }) => { 
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    let timerId;
-    if (status === GAME_STATUS.PROCESS) {
-      timerId = setInterval(() => setTime((t) => t + 1), 1000);
-    } else if (status === GAME_STATUS.WIN || status === GAME_STATUS.LOSE) {
-      clearInterval(timerId);
+    if (status !== GAME_STATUS.PROCESS) {
+      return undefined;
     }
-    
-    if (status === GAME_STATUS.PROCESS && time !== 0) {
-        setTime(0);
-    }
-
+  
+    setTime(0);
+    const timerId = setInterval(() => setTime((currentTime) => currentTime + 1), 1000);
+  
     return () => clearInterval(timerId);
   }, [status]);
 

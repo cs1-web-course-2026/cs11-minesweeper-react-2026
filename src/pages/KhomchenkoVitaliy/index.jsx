@@ -17,11 +17,13 @@ const Minesweeper = () => {
   const [field, setField] = useState([]);
   const [status, setStatus] = useState(GAME_STATUS.PROCESS);
   const [flagsCount, setFlagsCount] = useState(0);
+  const [gameId, setGameId] = useState(0);
 
   const initGame = useCallback(() => {
     setField(generateField(ROWS, COLS, MINES_COUNT));
     setStatus(GAME_STATUS.PROCESS);
     setFlagsCount(0);
+    setGameId(prev => prev + 1);
   }, []);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Minesweeper = () => {
     const cell = field[row][col];
     if (cell.state === CELL_STATE.OPENED || cell.state === CELL_STATE.FLAGGED) return;
 
-    const newField = field.map(r => r.map(c => ({ ...c })));
+    const newField = field.map(fieldRow => fieldRow.map(cell => ({ ...cell })));
     const currentCell = newField[row][col];
 
     currentCell.state = CELL_STATE.OPENED;
@@ -93,7 +95,7 @@ const Minesweeper = () => {
       <main className={styles.gameContainer}>
         <GameStatus status={status} />
         <header className={styles.gameHeader}>
-          <Timer status={status} />
+          <Timer status={status} gameId={gameId} />
           <RestartButton onRestart={initGame} />
           <div className={styles.flags}>{String(remainingFlags).padStart(3, '0')}</div>
         </header>

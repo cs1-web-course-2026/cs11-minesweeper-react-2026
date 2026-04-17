@@ -4,16 +4,20 @@ import styles from './Board.module.css';
 
 const Board = ({ field, onCellClick, onCellRightClick }) => {
   return (
-    <div className={styles.gameBoard}>
-      {field.map((row, rIdx) =>
-        row.map((cell, cIdx) => (
+    <div 
+      className={styles.gameBoard}
+      role="grid"
+      aria-label="Minesweeper board"
+    >
+      {field.map((row, rowIndex) =>
+        row.map((cell, colIndex) => (
           <Cell
-            key={`${rIdx}-${cIdx}`}
+            key={`${rowIndex}-${colIndex}`}
             data={cell}
-            row={rIdx}
-            col={cIdx}
-            onClick={() => onCellClick(rIdx, cIdx)}
-            onRightClick={() => onCellRightClick(rIdx, cIdx)}
+            row={rowIndex}
+            col={colIndex}
+            onClick={() => onCellClick(rowIndex, colIndex)}
+            onRightClick={() => onCellRightClick(rowIndex, colIndex)}
           />
         ))
       )}

@@ -11,26 +11,35 @@ export function generateField(rows, cols, minesCount) {
 
   let placedMines = 0;
   while (placedMines < minesCount) {
-    let r = Math.floor(Math.random() * rows);
-    let c = Math.floor(Math.random() * cols);
-    if (field[r][c].type === CELL_CONTENT.EMPTY) {
-      field[r][c].type = CELL_CONTENT.MINE;
+    let row = Math.floor(Math.random() * rows);
+    let col = Math.floor(Math.random() * cols);
+    
+    if (field[row][col].type === CELL_CONTENT.EMPTY) {
+      field[row][col].type = CELL_CONTENT.MINE;
       placedMines++;
     }
   }
 
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      if (field[r][c].type === CELL_CONTENT.EMPTY) {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (field[row][col].type === CELL_CONTENT.EMPTY) {
         let count = 0;
-        for (let i = -1; i <= 1; i++) {
-          for (let j = -1; j <= 1; j++) {
-            if (r + i >= 0 && r + i < rows && c + j >= 0 && c + j < cols) {
-              if (field[r + i][c + j].type === CELL_CONTENT.MINE) count++;
+        
+        for (let directionRow = -1; directionRow <= 1; directionRow++) {
+          for (let directionCol = -1; directionCol <= 1; directionCol++) {
+            
+            const neighborRow = row + directionRow;
+            const neighborCol = col + directionCol;
+
+            if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
+              if (field[neighborRow][neighborCol].type === CELL_CONTENT.MINE) {
+                count++;
+              }
             }
+            
           }
         }
-        field[r][c].neighborMines = count;
+        field[row][col].neighborMines = count;
       }
     }
   }
@@ -41,21 +50,26 @@ export function revealEmptyNeighbors(field, row, col) {
   const rows = field.length;
   const cols = field[0].length;
 
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      const nr = row + i;
-      const nc = col + j;
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-        const cell = field[nr][nc];
+  for (let directionRow = -1; directionRow <= 1; directionRow++) {
+    for (let directionCol = -1; directionCol <= 1; directionCol++) {
+      
+      const neighborRow = row + directionRow;
+      const neighborCol = col + directionCol;
+
+      if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) {
+        const cell = field[neighborRow][neighborCol];
+        
         if (cell.state === CELL_STATE.CLOSED && cell.type !== CELL_CONTENT.MINE) {
           cell.state = CELL_STATE.OPENED;
+          
           if (cell.neighborMines === 0) {
-            revealEmptyNeighbors(field, nr, nc);
+            revealEmptyNeighbors(field, neighborRow, neighborCol);
           }
         }
       }
     }
   }
+  return field;
 }
 
 export function checkWin(field, minesCount) {
