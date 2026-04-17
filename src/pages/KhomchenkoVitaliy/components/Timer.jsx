@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GAME_STATUS } from '../constants';
 import styles from './Timer.module.css';
 
-const Timer = ({ status, gameId }) => { 
+const Timer = ({ status }) => {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
