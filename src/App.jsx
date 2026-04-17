@@ -4,7 +4,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Game from './pages/Game'
 import MockGame from './pages/MockGame'
-import MockGameCopy from './pages/MockGameCopy'
 
 function App() {
   return (
