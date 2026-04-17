@@ -1,5 +1,7 @@
 # CS-11 Minesweeper Game - React
 
+**Live demo:** https://cs1-web-course-2026.github.io/cs11-minesweeper-react-2026/game
+
 A React-based implementation of the classic Minesweeper game built with Vite for fast development and hot module replacement.
 
 ## Prerequisites
