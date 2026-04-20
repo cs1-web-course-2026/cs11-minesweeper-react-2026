@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
 import styles from './Game.module.css'
+import MockGame_id2 from '../MockGameIndex2'; // Import the PresDavid component
+import MockGame from '../MockGame';
 
 const STATUS_CLASS = {
   'Complete': styles.statusComplete,
@@ -36,10 +38,11 @@ function Game() {
       id: 2,
       title: "Basic Minesweeper",
       description: "A simple implementation with basic game mechanics",
-      author: "Author Name",
-      link: "#",
+      author: "david pres",
+      link: "minesweeper_id2",
       difficulty: "Beginner",
-      status: "Complete"
+      status: "Complete",
+      component: MockGame_id2,
     },
     {
       id: 3,
