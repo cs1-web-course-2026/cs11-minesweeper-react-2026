@@ -40,61 +40,15 @@ const Minesweeper = () => {
         return `${m}:${s}`;
     };
 
-    const handleCellClick = (r, c) => {
-        if (status !== GAME_STATUS.PROCESS) return;
+    // Define helper functions before they are used in handlers
+    const handleEndGame = (result, finalField) => {
+        setStatus(result);
+        setTimerActive(false);
         
-        setField(prevField => {
-            const newField = prevField.map(row => row.map(cell => ({ ...cell })));
-            const targetCell = newField[r][c];
-
-            if (targetCell.state !== CELL_STATE.CLOSED) return prevField;
-
-            if (!timerActive) setTimerActive(true);
-
-            if (targetCell.type === CELL_TYPE.MINE) {
-                handleEndGame(GAME_STATUS.LOSE, newField);
-                return newField;
-            }
-
-            const reveal = (row, col) => {
-                if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
-                const cell = newField[row][col];
-                if (cell.state !== CELL_STATE.CLOSED) return;
-
-                cell.state = CELL_STATE.OPENED;
-                if (cell.neighborMines === 0) {
-                    for (let ro = -1; ro <= 1; ro++) {
-                        for (let co = -1; co <= 1; co++) {
-                            reveal(row + ro, col + co);
-                        }
-                    }
-                }
-            };
-
-            reveal(r, c);
-            checkWin(newField);
-            return newField;
-        });
-    };
-
-    const handleRightClick = (r, c) => {
-        if (status !== GAME_STATUS.PROCESS) return;
-        
-        setField(prevField => {
-            const newField = prevField.map(row => row.map(cell => ({ ...cell })));
-            const cell = newField[r][c];
-
-            if (cell.state === CELL_STATE.OPENED) return prevField;
-
-            if (cell.state === CELL_STATE.FLAGGED) {
-                cell.state = CELL_STATE.CLOSED;
-                setFlagsUsed(prev => prev - 1);
-            } else if (flagsUsed < MINES) {
-                cell.state = CELL_STATE.FLAGGED;
-                setFlagsUsed(prev => prev + 1);
-            }
-            return newField;
-        });
+        setField(finalField.map(row => row.map(cell => {
+            if (cell.type === CELL_TYPE.MINE) return { ...cell, state: CELL_STATE.OPENED };
+            return cell;
+        })));
     };
 
     const checkWin = (currentField) => {
@@ -105,14 +59,66 @@ const Minesweeper = () => {
         if (closedEmpty === 0) handleEndGame(GAME_STATUS.WIN, currentField);
     };
 
-    const handleEndGame = (result, finalField) => {
-        setStatus(result);
-        setTimerActive(false);
+    const handleCellClick = (r, c) => {
+        if (status !== GAME_STATUS.PROCESS) return;
         
-        setField(finalField.map(row => row.map(cell => {
-            if (cell.type === CELL_TYPE.MINE) return { ...cell, state: CELL_STATE.OPENED };
-            return cell;
-        })));
+        const target = field[r][c];
+        if (target.state !== CELL_STATE.CLOSED) return;
+
+        // Side effect: Start timer on first move
+        if (!timerActive) setTimerActive(true);
+
+        const newField = field.map(row => row.map(cell => ({ ...cell })));
+        const targetCell = newField[r][c];
+
+        if (targetCell.type === CELL_TYPE.MINE) {
+            handleEndGame(GAME_STATUS.LOSE, newField);
+            return;
+        }
+
+        const reveal = (row, col) => {
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
+            const cell = newField[row][col];
+            if (cell.state !== CELL_STATE.CLOSED) return;
+
+            cell.state = CELL_STATE.OPENED;
+            if (cell.neighborMines === 0) {
+                for (let ro = -1; ro <= 1; ro++) {
+                    for (let co = -1; co <= 1; co++) {
+                        reveal(row + ro, col + co);
+                    }
+                }
+            }
+        };
+
+        reveal(r, c);
+        
+        // Update state and then check for win condition
+        setField(newField);
+        checkWin(newField);
+    };
+
+    const handleRightClick = (r, c) => {
+        if (status !== GAME_STATUS.PROCESS) return;
+        
+        const target = field[r][c];
+        if (target.state === CELL_STATE.OPENED) return;
+
+        const newField = field.map(row => row.map(cell => ({ ...cell })));
+        const cell = newField[r][c];
+
+        if (cell.state === CELL_STATE.FLAGGED) {
+            cell.state = CELL_STATE.CLOSED;
+            setFlagsUsed(prev => prev - 1);
+        } else if (flagsUsed < MINES) {
+            cell.state = CELL_STATE.FLAGGED;
+            setFlagsUsed(prev => prev + 1);
+        } else {
+            // If no flags left and trying to flag, do nothing
+            return;
+        }
+
+        setField(newField);
     };
 
     return (

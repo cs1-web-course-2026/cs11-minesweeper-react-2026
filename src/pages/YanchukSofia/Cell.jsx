@@ -22,16 +22,18 @@ const Cell = ({ cell, onClick, onContextMenu }) => {
     }
 
     return (
-        <div 
-            className={className} 
+        <button
+            type="button"
+            aria-label={`Row ${cell.row + 1}, column ${cell.col + 1}, ${cell.state}`}
+            className={className}
             onClick={() => onClick(cell.row, cell.col)}
-            onContextMenu={(e) => {
-                e.preventDefault();
+            onContextMenu={(event) => {
+                event.preventDefault();
                 onContextMenu(cell.row, cell.col);
             }}
         >
             {content}
-        </div>
+        </button>
     );
 };
 
