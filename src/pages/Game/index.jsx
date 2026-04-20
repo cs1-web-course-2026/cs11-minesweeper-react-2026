@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import styles from './Game.module.css'
 
 const STATUS_CLASS = {
@@ -26,7 +28,7 @@ function Game() {
       title: "Mock Minesweeper Game",
       description: "A fully functional minesweeper implementation with timer, flagging, and win/lose detection. This serves as an example for students.",
       author: "Example Implementation",
-      link: "/mock-game",
+      link: "mock-game",
       difficulty: "Beginner",
       status: "Complete"
     },
@@ -98,11 +100,7 @@ function Game() {
             <p className={styles.author}>by {impl.author}</p>
             <p className={styles.description}>{impl.description}</p>
             <div className={styles.cardActions}>
-              {impl.link.startsWith('/') ? (
-                <a href={impl.link} className={styles.linkBtn}>
-                  View Implementation →
-                </a>
-              ) : (
+              {impl.link.startsWith('http') ? (
                 <a
                   href={impl.link}
                   target="_blank"
@@ -111,6 +109,14 @@ function Game() {
                 >
                   View Implementation →
                 </a>
+              ) : impl.link !== '#' ? (
+                <Link to={`/${impl.link}`} className={styles.linkBtn}>
+                  View Implementation →
+                </Link>
+              ) : (
+                <span className={styles.linkBtn} aria-disabled="true">
+                  View Implementation →
+                </span>
               )}
             </div>
           </div>
