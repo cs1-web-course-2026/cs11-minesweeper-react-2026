@@ -79,7 +79,7 @@ const MockGameIndex2 = () => {
 
   useEffect(() => {
     initializeBoard();
-    // eslint-disable-next-line react-hooks/exhaustive-depsпш
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // РЕШЕНИЕ ПРОБЛЕМЫ ЗАМОРОЗКИ БРАУЗЕРА:
