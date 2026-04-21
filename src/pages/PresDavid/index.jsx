@@ -166,13 +166,11 @@ const MockGameIndex3 = () => {
       }
       return prevTimes;
     });
-    setTimeout(() => alert('Congratulations! You cleared the minefield! 🏆'), 100);
   };
 
   const processLoss = () => {
     setGameOver(true);
     setIsTimerActive(false);
-    setTimeout(() => alert('Boom! You lost 💥'), 100);
   };
 
   const initializeBoard = (currentLevel = level) => {

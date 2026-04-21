@@ -122,7 +122,6 @@ const MockGameIndex2 = () => {
     }
     if (correctFlags === MINES_COUNT) {
       setGameWon(true);
-      setTimeout(() => alert('Congratulations! You cleared the minefield! 🏆'), 100);
     }
   };
 
