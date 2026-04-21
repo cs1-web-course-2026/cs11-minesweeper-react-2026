@@ -20,8 +20,22 @@ export function createBoard(rows, cols) {
   return board;
 }
 
+// --------------------------------------------------------------
+// Utility functions for board manipulation and game logic
+export function deepCloneBoard(board) {
+  const boardCopy = board.map((row) => [
+    ...row.map((cell) => ({ ...cell })),
+  ]);
+
+  return boardCopy;
+}
+export function rowCopy(board) {
+  return board.map((row) => [...row]);
+}
+// --------------------------------------------------------------
+
 export function placeMines(board, mineCount, rows, cols) {
-  const boardCopy = board.map((row) => [...row]);
+  const boardCopy = rowCopy(board);
   let minesPlaced = 0;
 
   while (minesPlaced < mineCount) {
@@ -38,7 +52,7 @@ export function placeMines(board, mineCount, rows, cols) {
 }
 
 export function calculateAdjacencyCount(board, rows, cols) {
-  const boardCopy = board.map((row) => [...row]);
+  const boardCopy = rowCopy(board);
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
@@ -71,9 +85,7 @@ export function isInBounds(row, col, rows, cols) {
 }
 
 export function revealCell(board, revealRow, revealCol, rows, cols) {
-  const boardCopy = board.map((row) => [
-    ...row.map((cell) => ({ ...cell })),
-  ]);
+  const boardCopy = deepCloneBoard(board);
 
   const cell = boardCopy[revealRow][revealCol];
 
@@ -170,9 +182,7 @@ function floodFillReveal(board, row, col, rows, cols) {
 }
 
 export function toggleFlag(board, row, col, mineCount, flagsPlaced) {
-  const boardCopy = board.map((boardRow) => [
-    ...boardRow.map((cell) => ({ ...cell })),
-  ]);
+  const boardCopy = deepCloneBoard(board);
 
   const cell = boardCopy[row][col];
 
@@ -209,9 +219,7 @@ export function checkWinCondition(board, rows, cols, mineCount) {
 }
 
 export function revealAllMines(board, rows, cols) {
-  const boardCopy = board.map((boardRow) => [
-    ...boardRow.map((cell) => ({ ...cell })),
-  ]);
+  const boardCopy = deepCloneBoard(board);
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {

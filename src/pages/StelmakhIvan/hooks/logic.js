@@ -1,18 +1,9 @@
-export const CELL_TYPE = {
-  MINE: 'mine',
-  EMPTY: 'empty',
-};
-
-export const CELL_STATE = {
-  OPEN: 'open',
-  CLOSED: 'closed',
-  FLAGGED: 'flagged',
-};
+import { CELL_STATE, CELL_CONTENT, GAME_STATUS } from "./constants";
 
 export const generateBoard = (rows, cols, minesCount) => {
   let board = Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
-      type: CELL_TYPE.EMPTY,
+      type: CELL_CONTENT.EMPTY,
       state: CELL_STATE.CLOSED,
       neighborMines: 0,
     }))
@@ -23,8 +14,8 @@ export const generateBoard = (rows, cols, minesCount) => {
     const r = Math.floor(Math.random() * rows);
     const c = Math.floor(Math.random() * cols);
 
-    if (board[r][c].type !== CELL_TYPE.MINE) {
-      board[r][c].type = CELL_TYPE.MINE;
+    if (board[r][c].type !== CELL_CONTENT.MINE) {
+      board[r][c].type = CELL_CONTENT.MINE;
       minesPlaced++;
     }
   }
@@ -37,14 +28,14 @@ const countNeighbors = (board, rows, cols) => {
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      if (newBoard[r][c].type === CELL_TYPE.MINE) continue;
+      if (newBoard[r][c].type === CELL_CONTENT.MINE) continue;
 
       let count = 0;
       for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
           const nr = r + dr;
           const nc = c + dc;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && newBoard[nr][nc].type === CELL_TYPE.MINE) {
+          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && newBoard[nr][nc].type === CELL_CONTENT.MINE) {
             count++;
           }
         }
@@ -66,7 +57,7 @@ export const openCell = (board, r, c, rows, cols) => {
 
     boardRef[row][col].state = CELL_STATE.OPEN;
 
-    if (boardRef[row][col].type === CELL_TYPE.MINE) return;
+    if (boardRef[row][col].type === CELL_CONTENT.MINE) return;
 
     if (boardRef[row][col].neighborMines === 0) {
       for (let dr = -1; dr <= 1; dr++) {
