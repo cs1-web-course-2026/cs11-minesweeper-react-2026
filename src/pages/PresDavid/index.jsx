@@ -14,7 +14,7 @@ const loadBestScores = () => {
   if (savedScores) {
     try {
       return JSON.parse(savedScores);
-    } catch (e) {
+    } catch {
       console.error("Ошибка парсинга рекордов");
     }
   }
@@ -187,6 +187,7 @@ const MockGameIndex3 = () => {
 
   useEffect(() => {
     initializeBoard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const changeDifficulty = (newLevel) => {
