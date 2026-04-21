@@ -42,16 +42,15 @@ function Game() {
       link: "minesweeper_id2",
       difficulty: "Beginner",
       status: "Complete",
-      component: MockGame_id2,
     },
     {
       id: 3,
       title: "Advanced Minesweeper",
       description: "Features timer, high scores, and custom difficulty",
       author: "Author name",
-      link: "#",
+      link: "minesweeper_id3",
       difficulty: "Intermediate",
-      status: "In Progress"
+      status: "Complete",
     },
     {
       id: 4,

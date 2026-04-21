@@ -5,122 +5,192 @@ const COLS = 10;
 const ROWS = 10;
 const MINES_COUNT = 10;
 
-const MinesweeperGame = () => {
-  // 1. Состояние игры
-  const [grid, setGrid] = useState([]);
+const MockGameIndex2 = () => {
+  const [cellsMatrix, setCellsMatrix] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
+  const [flagsPlaced, setFlagsPlaced] = useState(0);
 
-  // 2. Функция создания нового поля (Твоя старая функция инициализации)
-  const initializeBoard = () => {
-    let newGrid = Array(ROWS * COLS).fill(null).map(() => ({
-      value: 0,
-      isRevealed: false,
-      isFlagged: false,
-      isMine: false
-    }));
+  const isCellInBounds = (row, column) => {
+    return row >= 0 && row < ROWS && column >= 0 && column < COLS;
+  };
 
-    // Расставляем мины рандомно
+  const createEmptyCellsMatrix = () => {
+    let matrix = [];
+    for (let row = 0; row < ROWS; row++) {
+      let newRowInGrid = [];
+      for (let column = 0; column < COLS; column++) {
+        newRowInGrid.push({
+          value: 0,
+          isRevealed: false,
+          isFlagged: false,
+          isItMine: false,
+          isWronglyFlagged: false 
+        });
+      }
+      matrix.push(newRowInGrid); 
+    }
+    return matrix;
+  };
+
+  const insertMines = (matrix) => {
     let minesPlaced = 0;
     while (minesPlaced < MINES_COUNT) {
-      const randomIndex = Math.floor(Math.random() * (ROWS * COLS));
-      if (!newGrid[randomIndex].isMine) {
-        newGrid[randomIndex].isMine = true;
-        newGrid[randomIndex].value = 'mine';
+      const row = Math.floor(Math.random() * ROWS);
+      const column = Math.floor(Math.random() * COLS);
+      if (!matrix[row][column].isItMine) {
+        matrix[row][column].isItMine = true;
+        matrix[row][column].value = 'mine';
         minesPlaced++;
       }
     }
+  };
 
-    // Считаем цифры (соседей) для пустых клеток
-    for (let i = 0; i < ROWS * COLS; i++) {
-      if (newGrid[i].isMine) continue;
-      
-      let count = 0;
-      const row = Math.floor(i / COLS);
-      const col = i % COLS;
-
-      // Проверяем всех 8 соседей
-      for (let r = -1; r <= 1; r++) {
-        for (let c = -1; c <= 1; c++) {
-          if (r === 0 && c === 0) continue;
-          
-          const newRow = row + r;
-          const newCol = col + c;
-          
-          if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
-            const neighborIndex = newRow * COLS + newCol;
-            if (newGrid[neighborIndex].isMine) {
-              count++;
+  const insertValues = (matrix) => {
+    for (let row = 0; row < ROWS; row++) {
+      for (let column = 0; column < COLS; column++) {
+        if (matrix[row][column].isItMine) continue;
+        let count = 0;
+        for (let dRow = -1; dRow <= 1; dRow++) {
+          for (let dColumn = -1; dColumn <= 1; dColumn++) {
+            if (dRow === 0 && dColumn === 0) continue;
+            const newRow = row + dRow;
+            const newColumn = column + dColumn;
+            if (isCellInBounds(newRow, newColumn)) {
+              if (matrix[newRow][newColumn].isItMine) count++;
             }
           }
         }
+        matrix[row][column].value = count;
       }
-      newGrid[i].value = count;
     }
-
-    setGrid(newGrid);
-    setGameOver(false);
-    setGameWon(false);
   };
 
-  // Запускаем создание поля при первой загрузке страницы
+  const initializeBoard = () => {
+    let newCellsMatrix = createEmptyCellsMatrix();
+    insertMines(newCellsMatrix);
+    insertValues(newCellsMatrix);
+    
+    setCellsMatrix(newCellsMatrix);
+    setGameOver(false);
+    setGameWon(false);
+    setFlagsPlaced(0);
+  };
+
   useEffect(() => {
     initializeBoard();
   }, []);
 
-  // 3. Обработка клика (Открытие клетки)
-  const handleCellClick = (index) => {
-    // Если игра окончена или клетка уже открыта/с флагом - ничего не делаем
-    if (gameOver || gameWon || grid[index].isRevealed || grid[index].isFlagged) return;
+  // РЕШЕНИЕ ПРОБЛЕМЫ ЗАМОРОЗКИ БРАУЗЕРА:
+  // Alert сработает только через 100мс после проигрыша, давая React время всё нарисовать
+  useEffect(() => {
+    if (gameOver) {
+      setTimeout(() => alert('Boom! You lost 💥'), 100);
+    }
+  }, [gameOver]);
 
-    const newGrid = [...grid]; // Делаем копию массива (правило React!)
-    const clickedCell = newGrid[index];
+  const openCellsAroundZero = (matrixCopy, row, column) => {
+    openCell(matrixCopy, row - 1, column - 1);
+    openCell(matrixCopy, row - 1, column);
+    openCell(matrixCopy, row - 1, column + 1);
+    openCell(matrixCopy, row, column - 1);
+    openCell(matrixCopy, row, column + 1);
+    openCell(matrixCopy, row + 1, column - 1);
+    openCell(matrixCopy, row + 1, column);
+    openCell(matrixCopy, row + 1, column + 1);
+  };
 
-    // Попали на мину
-    if (clickedCell.isMine) {
+  const openCell = (matrixCopy, row, column) => {
+    if (!isCellInBounds(row, column)) return;
+    const cell = matrixCopy[row][column];
+    if (cell.isRevealed || cell.isFlagged) return;
+
+    cell.isRevealed = true;
+    if (cell.value === 0) {
+      openCellsAroundZero(matrixCopy, row, column);
+    }
+  };
+
+  const checkWinCondition = (currentMatrix) => {
+    let correctFlags = 0;
+    for (let row = 0; row < ROWS; row++) {
+      for (let column = 0; column < COLS; column++) {
+        if (currentMatrix[row][column].isItMine && currentMatrix[row][column].isFlagged) {
+          correctFlags++;
+        }
+      }
+    }
+    if (correctFlags === MINES_COUNT) {
+      setGameWon(true);
+      setTimeout(() => alert('Congratulations! You cleared the minefield! 🏆'), 100);
+    }
+  };
+
+  const revealMapAfterLose = (matrix) => {
+    for (let row = 0; row < ROWS; row++) {
+      for (let column = 0; column < COLS; column++) {
+        const cell = matrix[row][column];
+        if (cell.isItMine && !cell.isFlagged) {
+          cell.isRevealed = true;
+        } else if (!cell.isItMine && cell.isFlagged) {
+          cell.isWronglyFlagged = true;
+        }
+      }
+    }
+  };
+
+  const handleCellClick = (row, column) => {
+    if (gameOver || gameWon || cellsMatrix[row][column].isRevealed || cellsMatrix[row][column].isFlagged) return;
+    
+    // НАСТОЯЩЕЕ ГЛУБОКОЕ КОПИРОВАНИЕ: Копируем каждый отдельный объект-клетку
+    const newCellsMatrix = cellsMatrix.map(r => r.map(c => ({ ...c }))); 
+    const clickedCell = newCellsMatrix[row][column];
+
+    if (clickedCell.isItMine) {
       clickedCell.isRevealed = true;
-      setGrid(newGrid);
+      revealMapAfterLose(newCellsMatrix); 
+      setCellsMatrix(newCellsMatrix);
       setGameOver(true);
-      alert('Бууум! Вы проиграли 💥');
-      return;
+      return; 
     }
 
-    // Если это цифра
-    clickedCell.isRevealed = true;
-    setGrid(newGrid);
-    
-    // (Пока без рекурсивного открытия пустых зон, добавим на следующем шаге)
+    openCell(newCellsMatrix, row, column);
+    setCellsMatrix(newCellsMatrix);
   };
 
-  // 4. Установка флажка
-  const handleContextMenu = (e, index) => {
+  const handleContextMenu = (e, row, column) => {
     e.preventDefault();
-    if (gameOver || gameWon || grid[index].isRevealed) return;
+    if (gameOver || gameWon || cellsMatrix[row][column].isRevealed) return;
+    
+    // НАСТОЯЩЕЕ ГЛУБОКОЕ КОПИРОВАНИЕ
+    const newCellsMatrix = cellsMatrix.map(r => r.map(c => ({ ...c })));
+    const cell = newCellsMatrix[row][column];
+    
+    cell.isFlagged = !cell.isFlagged;
+    setCellsMatrix(newCellsMatrix);
 
-    const newGrid = [...grid];
-    newGrid[index].isFlagged = !newGrid[index].isFlagged;
-    setGrid(newGrid);
+    const newFlagsPlaced = flagsPlaced + (cell.isFlagged ? 1 : -1);
+    setFlagsPlaced(newFlagsPlaced);
+
+    if (newFlagsPlaced === MINES_COUNT) {
+      checkWinCondition(newCellsMatrix);
+    }
   };
 
-  if (grid.length === 0) return <div>Загрузка...</div>;
+  if (cellsMatrix.length === 0) return <div>Loading...</div>;
 
   return (
     <div style={{ textAlign: 'center', padding: '20px', userSelect: 'none' }}>
-      <h1>minesweeper</h1>
-      <button 
-        onClick={initializeBoard} 
-        style={{ marginBottom: '20px', padding: '10px 20px', cursor: 'pointer' }}
-      >
-        Перезапустить игру
+      <h1>Minesweeper id 2</h1>
+      <h2 style={{ height: '30px', color: gameOver ? 'red' : gameWon ? 'green' : 'black' }}>
+        {gameOver ? 'GAME OVER' : gameWon ? 'YOU WON!' : ''}
+      </h2>
+      <button onClick={initializeBoard} style={{ marginBottom: '20px', padding: '10px 20px', cursor: 'pointer' }}>
+        Restart Game
       </button>
-      
-      <Board 
-        grid={grid} 
-        onCellClick={handleCellClick} 
-        onCellContextMenu={handleContextMenu} 
-      />
+      <Board grid={cellsMatrix} onCellClick={handleCellClick} onCellContextMenu={handleContextMenu} />
     </div>
   );
 };
 
-export default MinesweeperGame;
+export default MockGameIndex2;

@@ -3,8 +3,21 @@ import Cell from './Cell';
 import styles from './Minesweeper.module.css';
 
 const Board = ({ grid, onCellClick, onCellContextMenu }) => {
+  const colsCount = grid.length > 0 ? grid[0].length : 10;
+
   return (
-    <div className={styles.board}>
+    <div 
+      className={styles.board}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${colsCount}, 30px)`,
+        gap: '2px',
+        backgroundColor: '#bdbdbd',
+        padding: '10px',
+        border: '3px inset #fff',
+        borderRadius: '5px'
+      }}
+    >
       {grid.map((row, rowIndex) => (
         row.map((cell, colIndex) => (
           <Cell 
@@ -13,12 +26,12 @@ const Board = ({ grid, onCellClick, onCellContextMenu }) => {
             isRevealed={cell.isRevealed} 
             isFlagged={cell.isFlagged}
             isWronglyFlagged={cell.isWronglyFlagged}
-            isExploded={cell.isExploded} // <-- ПЕРЕДАЕМ НОВОЕ СВОЙСТВО
+            isExploded={cell.isExploded}
             onClick={() => onCellClick(rowIndex, colIndex)}
             onContextMenu={(e) => onCellContextMenu(e, rowIndex, colIndex)}
           />
         ))
-      ))}
+    ))}
     </div>
   );
 };

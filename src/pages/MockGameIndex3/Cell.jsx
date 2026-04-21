@@ -18,11 +18,18 @@ const getNumberColor = (number) => {
 const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onClick, onContextMenu }) => {
   
   const getBackgroundColor = () => {
-    // 1. Делаем черный фон для ошибочных флагов
     if (isWronglyFlagged) return '#000000'; 
-    if (isRevealed && value === 'mine') return '#ff4d4d'; // Красный для мин
+    if (isRevealed && value === 'mine') return '#ff4d4d'; 
     if (isRevealed) return '#e0e0e0'; 
     return '#bdbdbd'; 
+  };
+  const getCellSymbol = () => {
+    if (isWronglyFlagged) return '❌';
+    if (isExploded) return '💥';
+    if (isFlagged && !isRevealed) return '🚩';
+    if (isRevealed && value === 'mine') return '💣';
+    if (isRevealed && value !== 0 && value !== 'mine') return value;
+    return ''; // Если ничего не подошло - возвращаем пустоту
   };
 
   let contentColor = 'inherit';
@@ -40,20 +47,14 @@ const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onCl
         color: contentColor 
       }}
     >
-
       {isWronglyFlagged ? '❌' : ''}
       {!isWronglyFlagged && isFlagged && !isRevealed ? '🚩' : ''}
-      
-      {/* Взорванная мина (на которую нажали) */}
       {!isWronglyFlagged && isExploded ? '💥' : ''}
-      
-      {/* Остальные мины (которые просто показались) */}
       {!isWronglyFlagged && isRevealed && value === 'mine' && !isExploded ? '💣' : ''}
-      
-      {/* Цифры */}
       {isRevealed && value !== 0 && value !== 'mine' ? value : ''}
     </div>
   );
 };
+
 
 export default Cell;
