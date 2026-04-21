@@ -47,11 +47,7 @@ const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onCl
         color: contentColor 
       }}
     >
-      {isWronglyFlagged ? '❌' : ''}
-      {!isWronglyFlagged && isFlagged && !isRevealed ? '🚩' : ''}
-      {!isWronglyFlagged && isExploded ? '💥' : ''}
-      {!isWronglyFlagged && isRevealed && value === 'mine' && !isExploded ? '💣' : ''}
-      {isRevealed && value !== 0 && value !== 'mine' ? value : ''}
+     {getCellSymbol()}
     </div>
   );
 };
