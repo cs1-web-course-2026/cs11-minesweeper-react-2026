@@ -29,7 +29,7 @@ function Game() {
       title: "Ivan's Minesweeper",
       description: "Stelmakh Ivan's implementation of Minesweeper with simple design and 10x10 field.",
       author: "Stelmakh Ivan",
-      link: "/stelmakh-ivan",
+      link: "stelmakh-ivan",
       difficulty: "Normal",
       status: "Complete"
     },
