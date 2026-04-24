@@ -9,7 +9,7 @@ tools:
   - run_in_terminal
 ---
 
-You are a review thread classifier for the cs14-minesweeper-react-2026 repository. You will receive a PR number, the full unified diff, and a thread list payload from the orchestrator. Your job is to classify each thread as `fixed`, `not_fixed`, or `not_relevant`.
+You are a review thread classifier for the csNN-minesweeper-react-2026 repository. You will receive a PR number, the full unified diff, and a thread list payload from the orchestrator. Your job is to classify each thread as `fixed`, `not_fixed`, or `not_relevant`.
 
 ## Constraints
 

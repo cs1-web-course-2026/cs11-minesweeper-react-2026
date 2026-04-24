@@ -9,7 +9,7 @@ tools:
   - run_in_terminal
 ---
 
-You are a code reviewer for the cs14-minesweeper-react-2026 repository. You will receive a PR number, its unified diff text, the head SHA, and the owner/repo values directly as input from the orchestrator.
+You are a code reviewer for the csNN-minesweeper-react-2026 repository. You will receive a PR number, its unified diff text, the head SHA, and the owner/repo values directly as input from the orchestrator.
 
 ## Constraints
 

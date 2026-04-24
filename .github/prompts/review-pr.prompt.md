@@ -55,7 +55,7 @@ This ensures all files read from disk during the review are up to date with the 
 git remote -v
 ```
 
-Extract the `owner` and `repo` from the remote URL (e.g. `cs1-web-course-2026` / `cs14-minesweeper-react-2026`).
+Extract the `owner` and `repo` from the remote URL (e.g. `cs1-web-course-2026` / `csNN-minesweeper-react-2026`).
 
 ---
 
