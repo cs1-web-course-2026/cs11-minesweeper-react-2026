@@ -56,22 +56,28 @@ export function generateField(rows, cols, minesCount) {
   return field;
 }
 
-export function revealEmptyNeighbors(field, row, col) {
+export function revealEmptyNeighbors(originalField, startRow, startCol) {
+  const field = structuredClone(originalField);
   const rows = field.length;
   const cols = field[0].length;
-  const neighbors = getNeighbors(row, col, rows, cols);
-  
-  for (let neighbor of neighbors) {
-    const cell = field[neighbor.row][neighbor.col];
+
+  function reveal(row, col) {
+    const neighbors = getNeighbors(row, col, rows, cols);
     
-    if (cell.state === CELL_STATE.CLOSED && cell.type !== CELL_CONTENT.MINE) {
-      cell.state = CELL_STATE.OPENED;
-      
-      if (cell.neighborMines === 0) {
-        revealEmptyNeighbors(field, neighbor.row, neighbor.col);
+    for (let neighbor of neighbors) {
+      const cell = field[neighbor.row][neighbor.col];
+
+      if (cell.state === CELL_STATE.CLOSED && cell.type !== CELL_CONTENT.MINE) {
+        cell.state = CELL_STATE.OPENED;
+        
+        if (cell.neighborMines === 0) {
+          reveal(neighbor.row, neighbor.col);
+        }
       }
     }
   }
+
+  reveal(startRow, startCol);
   
   return field;
 }

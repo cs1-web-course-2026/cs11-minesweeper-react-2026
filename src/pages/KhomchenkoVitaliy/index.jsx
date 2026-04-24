@@ -33,36 +33,35 @@ const Minesweeper = () => {
   const handleCellClick = (row, col) => {
     if (status !== GAME_STATUS.PROCESS) return;
 
-    const cell = field[row][col];
-    if (cell.state === CELL_STATE.OPENED || cell.state === CELL_STATE.FLAGGED) return;
+    const clickedCell = field[row][col];
+    if (clickedCell.state === CELL_STATE.OPENED || clickedCell.state === CELL_STATE.FLAGGED) return;
 
-    const newField = field.map(fieldRow => fieldRow.map(cell => ({ ...cell })));
-    const currentCell = newField[row][col];
-
-    currentCell.state = CELL_STATE.OPENED;
-
-    if (currentCell.type === CELL_CONTENT.MINE) {
-      
-      newField.forEach(r => {
-        r.forEach(c => {
-          if (c.type === CELL_CONTENT.MINE) {
-            c.state = CELL_STATE.OPENED;
+    if (clickedCell.type === CELL_CONTENT.MINE) {
+      const loseField = field.map(fieldRow => fieldRow.map(cell => ({ ...cell })));
+      loseField.forEach(fieldRow => {
+        fieldRow.forEach(cell => {
+          if (cell.type === CELL_CONTENT.MINE) {
+            cell.state = CELL_STATE.OPENED;
           }
         });
       });
-
-      setField(newField);
+      setField(loseField);
       setStatus(GAME_STATUS.LOSE);
       return;
     }
 
-    if (currentCell.neighborMines === 0) {
-      revealEmptyNeighbors(newField, row, col);
+    let nextField;
+    
+    if (clickedCell.neighborMines === 0) {
+      nextField = revealEmptyNeighbors(field, row, col);
+    } else {
+      nextField = field.map(fieldRow => fieldRow.map(cell => ({ ...cell })));
+      nextField[row][col].state = CELL_STATE.OPENED;
     }
 
-    setField(newField);
+    setField(nextField);
 
-    if (checkWin(newField, MINES_COUNT)) {
+    if (checkWin(nextField, MINES_COUNT)) {
       setStatus(GAME_STATUS.WIN);
     }
   };
@@ -70,16 +69,16 @@ const Minesweeper = () => {
   const handleRightClick = (row, col) => {
     if (status !== GAME_STATUS.PROCESS) return;
 
-    const newField = field.map(r => r.map(c => ({ ...c })));
-    const cell = newField[row][col];
+    const newField = field.map(fieldRow => fieldRow.map(cell => ({ ...cell })));
+    const clickedCell = newField[row][col];
 
-    if (cell.state === CELL_STATE.OPENED) return;
+    if (clickedCell.state === CELL_STATE.OPENED) return;
 
-    if (cell.state === CELL_STATE.CLOSED) {
-      cell.state = CELL_STATE.FLAGGED;
+    if (clickedCell.state === CELL_STATE.CLOSED) {
+      clickedCell.state = CELL_STATE.FLAGGED;
       setFlagsCount(prev => prev + 1);
-    } else if (cell.state === CELL_STATE.FLAGGED) {
-      cell.state = CELL_STATE.CLOSED;
+    } else if (clickedCell.state === CELL_STATE.FLAGGED) {
+      clickedCell.state = CELL_STATE.CLOSED;
       setFlagsCount(prev => prev - 1);
     }
 
