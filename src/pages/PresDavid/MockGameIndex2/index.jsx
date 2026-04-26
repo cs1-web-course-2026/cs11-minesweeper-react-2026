@@ -82,13 +82,6 @@ const MockGameIndex2 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // РЕШЕНИЕ ПРОБЛЕМЫ ЗАМОРОЗКИ БРАУЗЕРА:
-  // Alert сработает только через 100мс после проигрыша, давая React время всё нарисовать
-  useEffect(() => {
-    if (gameOver) {
-      setTimeout(() => alert('Boom! You lost 💥'), 100);
-    }
-  }, [gameOver]);
 
   const openCellsAroundZero = (matrixCopy, row, column) => {
     openCell(matrixCopy, row - 1, column - 1);

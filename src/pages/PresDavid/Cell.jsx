@@ -15,7 +15,7 @@ const getNumberColor = (number) => {
   }
 };
 
-const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onClick, onContextMenu }) => {
+const Cell = ({ value, row, col, isRevealed, isFlagged, isWronglyFlagged, isExploded, onClick, onContextMenu }) => {
   
   const getBackgroundColor = () => {
     if (isWronglyFlagged) return '#000000'; 
@@ -23,13 +23,14 @@ const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onCl
     if (isRevealed) return '#e0e0e0'; 
     return '#bdbdbd'; 
   };
+
   const getCellSymbol = () => {
     if (isWronglyFlagged) return '❌';
     if (isExploded) return '💥';
     if (isFlagged && !isRevealed) return '🚩';
     if (isRevealed && value === 'mine') return '💣';
     if (isRevealed && value !== 0 && value !== 'mine') return value;
-    return ''; // Если ничего не подошло - возвращаем пустоту
+    return ''; 
   };
 
   let contentColor = 'inherit';
@@ -37,20 +38,33 @@ const Cell = ({ value, isRevealed, isFlagged, isWronglyFlagged, isExploded, onCl
     contentColor = getNumberColor(value);
   }
 
+
+  const handleKeyDown = (e) => {
+    if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault(); 
+      onContextMenu(e);   
+    }
+  };
+
   return (
-    <div 
+    <button 
+      type="button"
       className={`${styles.cell} ${isRevealed ? styles.revealed : ''}`} 
       onClick={onClick} 
       onContextMenu={onContextMenu}
+      onKeyDown={handleKeyDown}
+      aria-label={`Клетка ряд ${row + 1}, колонка ${col + 1}`}
       style={{ 
         backgroundColor: getBackgroundColor(),
-        color: contentColor 
+        color: contentColor,
+        // Сброс некоторых дефолтных стилей кнопки, чтобы она выглядела как ваш старый div
+        padding: 0,
+        fontFamily: 'inherit'
       }}
     >
      {getCellSymbol()}
-    </div>
+    </button>
   );
 };
-
 
 export default Cell;

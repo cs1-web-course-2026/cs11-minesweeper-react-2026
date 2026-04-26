@@ -22,6 +22,8 @@ const Board = ({ grid, onCellClick, onCellContextMenu }) => {
         row.map((cell, colIndex) => (
           <Cell 
             key={`${rowIndex}-${colIndex}`} 
+            row={rowIndex}
+            col={colIndex}
             value={cell.value} 
             isRevealed={cell.isRevealed} 
             isFlagged={cell.isFlagged}
@@ -31,7 +33,7 @@ const Board = ({ grid, onCellClick, onCellContextMenu }) => {
             onContextMenu={(e) => onCellContextMenu(e, rowIndex, colIndex)}
           />
         ))
-    ))}
+      ))}
     </div>
   );
 };

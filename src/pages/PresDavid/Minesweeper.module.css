@@ -17,7 +17,8 @@
   justify-content: center;
   font-weight: bold;
   cursor: pointer;
-  user-select: none; /* чтобы текст не выделялся при быстрых кликах */
+  user-select: none; 
+  border-radius: 0; 
 }
 
 .cell.revealed {

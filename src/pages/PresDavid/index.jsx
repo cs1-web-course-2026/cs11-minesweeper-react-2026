@@ -7,8 +7,6 @@ const LEVELS = {
   Expert: { name: 'Expert', rows: 16, cols: 30, mines: 99 },
 };
 
-
-
 const loadBestScores = () => {
   const savedScores = localStorage.getItem('minesweeper_scores');
   if (savedScores) {
@@ -74,7 +72,6 @@ const insertValues = (matrix, rows, cols) => {
   }
 };
 
-// Главная функция-фабрика: сама собирает и возвращает готовое поле
 const generateNewBoard = (rows, cols, minesCount) => {
   let newMatrix = createEmptyCellsMatrix(rows, cols);
   insertMines(newMatrix, rows, cols, minesCount);
@@ -86,10 +83,8 @@ const openCellsAroundZero = (matrixCopy, row, column, rows, cols) => {
   openCellLogic(matrixCopy, row - 1, column - 1, rows, cols);
   openCellLogic(matrixCopy, row - 1, column, rows, cols);
   openCellLogic(matrixCopy, row - 1, column + 1, rows, cols);
-
   openCellLogic(matrixCopy, row, column - 1, rows, cols);
   openCellLogic(matrixCopy, row, column + 1, rows, cols);
-
   openCellLogic(matrixCopy, row + 1, column - 1, rows, cols);
   openCellLogic(matrixCopy, row + 1, column, rows, cols);
   openCellLogic(matrixCopy, row + 1, column + 1, rows, cols);
@@ -115,7 +110,6 @@ const revealMapAfterLoseLogic = (matrix) => {
   });
 };
 
-// Просто возвращает true или false, не трогая React state
 const checkIsGameWonLogic = (matrix, totalMines) => {
   let correctFlags = 0;
   matrix.forEach(row => {
@@ -126,9 +120,8 @@ const checkIsGameWonLogic = (matrix, totalMines) => {
   return correctFlags === totalMines;
 };
 
-
 // ==========================================
-// 📺 REACT КОМПОНЕНТ (ОТВЕЧАЕТ ЗА ЭКРАН И СТЕЙТ)
+// 📺 REACT КОМПОНЕНТ
 // ==========================================
 
 const MockGameIndex3 = () => {
@@ -152,8 +145,6 @@ const MockGameIndex3 = () => {
     return () => clearInterval(interval);
   }, [isTimerActive, gameOver, gameWon]);
 
-  // --- МЕТОДЫ УПРАВЛЕНИЯ СОСТОЯНИЕМ ---
-
   const processWin = () => {
     setGameWon(true);
     setIsTimerActive(false);
@@ -174,9 +165,7 @@ const MockGameIndex3 = () => {
   };
 
   const initializeBoard = (currentLevel = level) => {
-    // Вызываем нашу внешнюю бизнес-логику!
     const newMatrix = generateNewBoard(currentLevel.rows, currentLevel.cols, currentLevel.mines);
-    
     setCellsMatrix(newMatrix);
     setGameOver(false);
     setGameWon(false);
@@ -187,15 +176,13 @@ const MockGameIndex3 = () => {
 
   useEffect(() => {
     initializeBoard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const changeDifficulty = (newLevel) => {
     setLevel(newLevel);
     initializeBoard(newLevel);
   };
-
-  // --- ОБРАБОТЧИКИ КЛИКОВ ПО ДОСКЕ ---
 
   const handleCellClick = (row, column) => {
     if (gameOver || gameWon || cellsMatrix[row][column].isRevealed || cellsMatrix[row][column].isFlagged) return;
@@ -208,14 +195,14 @@ const MockGameIndex3 = () => {
     if (cell.isItMine) {
       cell.isExploded = true;
       cell.isRevealed = true;
-      revealMapAfterLoseLogic(newMatrix); // Вызываем внешнюю логику
+      revealMapAfterLoseLogic(newMatrix);
       
       setCellsMatrix(newMatrix);
       processLoss();
       return;
     }
 
-    openCellLogic(newMatrix, row, column, level.rows, level.cols); // Вызываем внешнюю логику
+    openCellLogic(newMatrix, row, column, level.rows, level.cols);
     setCellsMatrix(newMatrix);
   };
 
@@ -234,7 +221,6 @@ const MockGameIndex3 = () => {
     const currentFlags = flagsPlaced + (cell.isFlagged ? 1 : -1);
     setFlagsPlaced(currentFlags);
 
-    // Вызываем внешнюю логику для проверки победы
     if (checkIsGameWonLogic(newMatrix, level.mines)) {
       processWin();
     }
