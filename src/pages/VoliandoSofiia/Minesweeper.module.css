@@ -1,0 +1,25 @@
+:root {
+    --purple-dark: #44337a;
+    --purple-medium: #6b46c1;
+    --purple-light: #9f7aea;
+    --purple-bg: #2c1f4a;
+}
+
+.container {
+    background: var(--purple-dark);
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--purple-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+}
