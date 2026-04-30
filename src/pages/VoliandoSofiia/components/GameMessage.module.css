@@ -1,0 +1,11 @@
+.message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 30px;
+    background: #2c1f4a;
+    color: #d6bcfa;
+    min-height: 50px;
+}
