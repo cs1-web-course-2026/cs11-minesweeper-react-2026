@@ -6,6 +6,7 @@ function Board({ board, rows, cols, onCellClick, onCellRightClick, getCellValue 
   const gridStyle = {
     display: 'grid',
     gridTemplateColumns: `repeat(${cols}, var(--cell-size))`,
+    gridTemplateRows: `repeat(${rows}, var(--cell-size))`,
     gap: 'var(--cell-gap)'
   };
 
