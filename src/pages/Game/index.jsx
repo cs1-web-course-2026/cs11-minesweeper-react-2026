@@ -58,6 +58,15 @@ function Game() {
       link: "#",
       difficulty: "Advanced",
       status: "Planning"
+    },
+    {
+      id: 5,
+      title: "Horror Minesweeper", 
+      description: "A horror-inspired Minesweeper design with deadly skull mines, pentagram flags, and a crimson glow.",
+      author: "Vitaliy Khomchenko",
+      link: "/khomchenko-vitaliy", 
+      difficulty: "Intermediate",
+      status: "Complete"
     }
   ]
 

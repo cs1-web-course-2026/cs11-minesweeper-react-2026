@@ -1,0 +1,25 @@
+.restartBtn {
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff0000, 0 0 30px #800000;
+    transition: transform 0.2s;
+    font-size: 20px;
+  }
+  
+  .restartBtn:active {
+    transform: scale(0.9);
+  }
+  
+  @media (max-width: 500px) {
+    .restartBtn {
+        width: 35px;
+        height: 35px;
+    }
+  }
