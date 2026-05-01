@@ -1,0 +1,17 @@
+.timer {
+    background: rgba(255, 0, 0, 0.05);
+    color: #ff0000;
+    padding: 8px 18px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 6px;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #800000;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+  }
+  
+  @media (max-width: 500px) {
+    .timer {
+        font-size: 18px;
+        padding: 4px 10px;
+    }
+  }
