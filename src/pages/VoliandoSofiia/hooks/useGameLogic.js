@@ -12,6 +12,51 @@ const DIFFICULTY_SETTINGS = {
   hard: { rows: 16, cols: 16, mines: 40, name: 'Складний (16x16)' }
 };
 
+// Допоміжна функція для створення порожньої дошки
+const createEmptyBoardWithSize = (rows, cols) => {
+  return Array(rows).fill().map(() =>
+    Array(cols).fill().map(() => ({
+      mine: false,
+      revealed: false,
+      flagged: false,
+      neighborMines: 0
+    }))
+  );
+};
+
+// Допоміжна функція для оновлення однієї клітинки (без мутації)
+const updateCell = (board, targetRow, targetCol, updater) => {
+  return board.map((boardRow, rowIndex) =>
+    boardRow.map((cell, colIndex) => {
+      if (rowIndex === targetRow && colIndex === targetCol) {
+        return updater(cell);
+      }
+      return cell;
+    })
+  );
+};
+
+// Допоміжна функція для відкриття клітинки (рекурсивно)
+const revealCellRecursive = (board, row, col, rows, cols) => {
+  if (row < 0 || row >= rows || col < 0 || col >= cols) return board;
+  
+  const cell = board[row][col];
+  if (cell.revealed || cell.flagged) return board;
+  
+  let newBoard = updateCell(board, row, col, (c) => ({ ...c, revealed: true }));
+  
+  if (cell.neighborMines === 0 && !cell.mine) {
+    for (let directionRow = -1; directionRow <= 1; directionRow++) {
+      for (let directionCol = -1; directionCol <= 1; directionCol++) {
+        if (directionRow === 0 && directionCol === 0) continue;
+        newBoard = revealCellRecursive(newBoard, row + directionRow, col + directionCol, rows, cols);
+      }
+    }
+  }
+  
+  return newBoard;
+};
+
 function useGameLogic() {
   const [gameState, setGameState] = useState({
     rows: 10,
@@ -25,9 +70,10 @@ function useGameLogic() {
     message: ''
   });
 
-  const [board, setBoard] = useState([]);
+  // Ініціалізація дошки при першому рендері
+  const [board, setBoard] = useState(() => createEmptyBoardWithSize(10, 10));
+  
   const timerRef = useRef(null);
-  const firstClickRef = useRef(true);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
@@ -48,26 +94,10 @@ function useGameLogic() {
     }, 1000);
   }, [stopTimer]);
 
-  const createEmptyBoard = useCallback(() => {
-    const newBoard = [];
-    for (let row = 0; row < gameState.rows; row++) {
-      newBoard[row] = [];
-      for (let col = 0; col < gameState.cols; col++) {
-        newBoard[row][col] = {
-          mine: false,
-          revealed: false,
-          flagged: false,
-          neighborMines: 0
-        };
-      }
-    }
-    return newBoard;
-  }, [gameState.rows, gameState.cols]);
-
-  const countNeighbourMines = useCallback((currentBoard) => {
-    const newBoard = [...currentBoard];
-    for (let row = 0; row < gameState.rows; row++) {
-      for (let col = 0; col < gameState.cols; col++) {
+  const countNeighbourMines = useCallback((currentBoard, rows, cols) => {
+    let newBoard = [...currentBoard];
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
         if (newBoard[row][col].mine) continue;
 
         let mineCount = 0;
@@ -75,85 +105,57 @@ function useGameLogic() {
           for (let directionCol = -1; directionCol <= 1; directionCol++) {
             const neighborRow = row + directionRow;
             const neighborCol = col + directionCol;
-            const isValid = neighborRow >= 0 && neighborRow < gameState.rows &&
-                           neighborCol >= 0 && neighborCol < gameState.cols;
+            const isValid = neighborRow >= 0 && neighborRow < rows &&
+                           neighborCol >= 0 && neighborCol < cols;
             if (isValid && newBoard[neighborRow][neighborCol].mine) {
               mineCount++;
             }
           }
         }
-        newBoard[row][col].neighborMines = mineCount;
+        newBoard = updateCell(newBoard, row, col, (c) => ({ ...c, neighborMines: mineCount }));
       }
     }
     return newBoard;
-  }, [gameState.rows, gameState.cols]);
+  }, []);
 
-  const placeMines = useCallback((firstRow, firstCol, currentBoard) => {
-    const newBoard = [...currentBoard];
+  const placeMines = useCallback((firstRow, firstCol, currentBoard, rows, cols, totalMines) => {
+    let newBoard = [...currentBoard];
     let minesPlaced = 0;
-    while (minesPlaced < gameState.totalMines) {
-      const row = Math.floor(Math.random() * gameState.rows);
-      const col = Math.floor(Math.random() * gameState.cols);
+    while (minesPlaced < totalMines) {
+      const row = Math.floor(Math.random() * rows);
+      const col = Math.floor(Math.random() * cols);
       const isFirstClickArea = Math.abs(row - firstRow) <= 1 && Math.abs(col - firstCol) <= 1;
       if (!newBoard[row][col].mine && !isFirstClickArea) {
-        newBoard[row][col].mine = true;
+        newBoard = updateCell(newBoard, row, col, (c) => ({ ...c, mine: true }));
         minesPlaced++;
       }
     }
-    return countNeighbourMines(newBoard);
-  }, [gameState.rows, gameState.cols, gameState.totalMines, countNeighbourMines]);
+    return countNeighbourMines(newBoard, rows, cols);
+  }, [countNeighbourMines]);
 
-  const openCell = useCallback((row, col, currentBoard) => {
-    if (row < 0 || row >= gameState.rows || col < 0 || col >= gameState.cols) {
-      return currentBoard;
-    }
-
-    const newBoard = [...currentBoard];
-    const cell = newBoard[row][col];
-
-    if (cell.revealed || cell.flagged) {
-      return newBoard;
-    }
-
-    cell.revealed = true;
-
-    if (cell.neighborMines === 0 && !cell.mine) {
-      for (let directionRow = -1; directionRow <= 1; directionRow++) {
-        for (let directionCol = -1; directionCol <= 1; directionCol++) {
-          if (directionRow === 0 && directionCol === 0) continue;
-          openCell(row + directionRow, col + directionCol, newBoard);
+  const revealAllMines = useCallback((currentBoard, rows, cols) => {
+    let newBoard = [...currentBoard];
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (newBoard[row][col].mine) {
+          newBoard = updateCell(newBoard, row, col, (c) => ({ ...c, revealed: true }));
         }
       }
     }
-
     return newBoard;
-  }, [gameState.rows, gameState.cols]);
+  }, []);
 
-  const checkWinCondition = useCallback((currentBoard) => {
-    let allSafeRevealed = true;
-    for (let row = 0; row < gameState.rows; row++) {
-      for (let col = 0; col < gameState.cols; col++) {
+  const checkWinCondition = useCallback((currentBoard, rows, cols) => {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
         const cell = currentBoard[row][col];
         if (!cell.mine && !cell.revealed) {
-          allSafeRevealed = false;
-          break;
+          return false;
         }
       }
     }
-    return allSafeRevealed;
-  }, [gameState.rows, gameState.cols]);
-
-  const revealAllMines = useCallback((currentBoard) => {
-    const newBoard = [...currentBoard];
-    for (let row = 0; row < gameState.rows; row++) {
-      for (let col = 0; col < gameState.cols; col++) {
-        if (newBoard[row][col].mine) {
-          newBoard[row][col].revealed = true;
-        }
-      }
-    }
-    return newBoard;
-  }, [gameState.rows, gameState.cols]);
+    return true;
+  }, []);
 
   const handleCellClick = useCallback((row, col) => {
     setGameState(prev => {
@@ -171,19 +173,19 @@ function useGameLogic() {
       let newMessage = prev.message;
 
       if (prev.status === GAME_STATUS.IDLE) {
-        newBoard = placeMines(row, col, newBoard);
+        newBoard = placeMines(row, col, newBoard, prev.rows, prev.cols, prev.totalMines);
         newStatus = GAME_STATUS.PLAYING;
         startTimer();
       }
 
       if (newBoard[row][col].mine) {
-        newBoard = revealAllMines(newBoard);
+        newBoard = revealAllMines(newBoard, prev.rows, prev.cols);
         newStatus = GAME_STATUS.LOST;
         newMessage = '💥 Поразка! Ви програли! 💥';
         stopTimer();
       } else {
-        newBoard = openCell(row, col, newBoard);
-        const isWin = checkWinCondition(newBoard);
+        newBoard = revealCellRecursive(newBoard, row, col, prev.rows, prev.cols);
+        const isWin = checkWinCondition(newBoard, prev.rows, prev.cols);
         if (isWin) {
           newStatus = GAME_STATUS.WON;
           newMessage = '🎉 Перемога! Ви виграли! 🎉';
@@ -191,11 +193,10 @@ function useGameLogic() {
         }
       }
 
-      const revealedCount = newBoard.flat().filter(c => c.revealed && !c.mine).length;
       setBoard(newBoard);
-      return { ...prev, status: newStatus, message: newMessage, cellsRevealed: revealedCount };
+      return { ...prev, status: newStatus, message: newMessage };
     });
-  }, [board, placeMines, startTimer, revealAllMines, openCell, checkWinCondition, stopTimer]);
+  }, [board, placeMines, startTimer, revealAllMines, checkWinCondition, stopTimer]);
 
   const handleRightClick = useCallback((row, col, event) => {
     event.preventDefault();
@@ -205,29 +206,28 @@ function useGameLogic() {
       const cell = board[row][col];
       if (cell.revealed) return prev;
 
-      const newBoard = [...board];
       let newFlagsPlaced = prev.flagsPlaced;
 
       if (!cell.flagged) {
         if (newFlagsPlaced < prev.totalMines) {
-          newBoard[row][col].flagged = true;
+          const newBoard = updateCell(board, row, col, (c) => ({ ...c, flagged: true }));
+          setBoard(newBoard);
           newFlagsPlaced++;
         }
       } else {
-        newBoard[row][col].flagged = false;
+        const newBoard = updateCell(board, row, col, (c) => ({ ...c, flagged: false }));
+        setBoard(newBoard);
         newFlagsPlaced--;
       }
 
-      setBoard(newBoard);
       return { ...prev, flagsPlaced: newFlagsPlaced };
     });
   }, [board]);
 
   const handleNewGame = useCallback(() => {
     stopTimer();
-    firstClickRef.current = true;
-    const emptyBoard = createEmptyBoard();
-    setBoard(emptyBoard);
+    const newBoard = createEmptyBoardWithSize(gameState.rows, gameState.cols);
+    setBoard(newBoard);
     setGameState(prev => ({
       ...prev,
       status: GAME_STATUS.IDLE,
@@ -236,12 +236,15 @@ function useGameLogic() {
       seconds: 0,
       message: ''
     }));
-  }, [createEmptyBoard, stopTimer]);
+  }, [gameState.rows, gameState.cols, stopTimer]);
 
   const handleDifficultyChange = useCallback((difficulty) => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
     stopTimer();
-    firstClickRef.current = true;
+    
+    const newBoard = createEmptyBoardWithSize(settings.rows, settings.cols);
+    setBoard(newBoard);
+    
     setGameState({
       rows: settings.rows,
       cols: settings.cols,
@@ -253,9 +256,7 @@ function useGameLogic() {
       seconds: 0,
       message: ''
     });
-    const emptyBoard = createEmptyBoard();
-    setBoard(emptyBoard);
-  }, [createEmptyBoard, stopTimer]);
+  }, [stopTimer]);
 
   const getCellValue = useCallback((cell) => {
     if (!cell.revealed) return null;
