@@ -1,21 +1,24 @@
-import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
-import Home from './pages/Home'
-import About from './pages/About'
-import Game from './pages/Game'
-import MockGame from './pages/MockGame'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import VoliandoSofiiaGame from './pages/VoliandoSofiia';
+
+function Home() {
+  return (
+    <div style={{ textAlign: 'center', padding: '50px' }}>
+      <h1>Виберіть гру</h1>
+      <Link to="/voliando-sofiia">Voliando Sofiia - Minesweeper</Link>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="game" element={<Game />} />
-        <Route path="mock-game" element={<MockGame />} />
-      </Route>
-    </Routes>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/voliando-sofiia" element={<VoliandoSofiiaGame />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
