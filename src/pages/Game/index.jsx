@@ -67,6 +67,15 @@ function Game() {
       link: "/khomchenko-vitaliy", 
       difficulty: "Intermediate",
       status: "Complete"
+    },
+    {
+      id: 6,
+      title: "Minesweeper by Maria",
+      description: "A complete React implementation of Minesweeper with CSS modules and state management.",
+      author: "Maria Sechko",
+      link: "sechko-maria", 
+      difficulty: "Intermediate",
+      status: "Complete"
     }
   ]
 
