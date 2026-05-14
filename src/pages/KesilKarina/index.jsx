@@ -32,11 +32,11 @@ export default function KesilKarina() {
 
   useEffect(() => {
     if (!timerActive) return;
-    const id = setInterval(() => setGameTime(t => t + 1), 1000);
-    return () => clearInterval(id);
+    const timerId = setInterval(() => setGameTime(prevTime => prevTime + 1), 1000);
+    return () => clearInterval(timerId);
   }, [timerActive]);
 
-  const flaggedCount = board.flat().filter(c => c.state === CELL_STATE.FLAGGED).length;
+  const flaggedCount = board.flat().filter(cell => cell.state === CELL_STATE.FLAGGED).length;
   const minesLeft = MINES_COUNT - flaggedCount;
 
   function handleRestart() {
@@ -87,17 +87,24 @@ export default function KesilKarina() {
   }
 
   return (
-    <div className={styles.game}>
-      <div className={styles.header}>
+    <main className={styles.game}>
+      <header className={styles.header}>
         <Timer time={gameTime} />
-        <div className={styles.minesCounter}>{getStatusText()}</div>
-      </div>
+        <div 
+          className={styles.minesCounter} 
+          role="status" 
+          aria-live="polite" 
+          aria-atomic="true"
+        >
+          {getStatusText()}
+        </div>
+      </header>
       <Board
         board={board}
         onCellClick={handleCellClick}
         onCellRightClick={handleCellRightClick}
       />
       <RestartButton onRestart={handleRestart} />
-    </div>
+    </main>
   );
 }

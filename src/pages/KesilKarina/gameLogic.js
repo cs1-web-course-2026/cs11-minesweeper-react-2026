@@ -49,11 +49,11 @@ export function countNeighborMines(field, rows, cols) {
     for (let col = 0; col < cols; col++) {
       if (newField[row][col].type === CELL_TYPE.EMPTY) {
         let count = 0;
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            if (dr === 0 && dc === 0) continue;
-            const neighborRow = row + dr;
-            const neighborCol = col + dc;
+        for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+          for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+            if (deltaRow === 0 && deltaCol === 0) continue;
+            const neighborRow = row + deltaRow;
+            const neighborCol = col + deltaCol;
             if (
               neighborRow >= 0 && neighborRow < rows &&
               neighborCol >= 0 && neighborCol < cols &&
@@ -87,10 +87,10 @@ export function openCell(field, startRow, startCol, rows, cols) {
     newField[row][col] = { ...cell, state: CELL_STATE.OPENED };
 
     if (cell.neighborMines === 0 && cell.type === CELL_TYPE.EMPTY) {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue;
-          stack.push([row + dr, col + dc]);
+      for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+        for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+          if (deltaRow === 0 && deltaCol === 0) continue;
+          stack.push([row + deltaRow, col + deltaCol]);
         }
       }
     }
@@ -118,9 +118,9 @@ export function checkWin(field) {
 }
 
 export function toggleFlag(field, row, col) {
-  return field.map((r, rowIdx) =>
-    r.map((cell, colIdx) => {
-      if (rowIdx !== row || colIdx !== col) return cell;
+  return field.map((rowItem, rowIndex) =>
+    rowItem.map((cell, columnIndex) => {
+      if (rowIndex !== row || columnIndex !== col) return cell;
       if (cell.state === CELL_STATE.CLOSED) return { ...cell, state: CELL_STATE.FLAGGED };
       if (cell.state === CELL_STATE.FLAGGED) return { ...cell, state: CELL_STATE.CLOSED };
       return cell;

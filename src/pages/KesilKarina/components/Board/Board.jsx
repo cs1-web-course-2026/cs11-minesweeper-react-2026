@@ -3,7 +3,7 @@ import styles from './Board.module.css';
 
 export default function Board({ board, onCellClick, onCellRightClick }) {
   return (
-    <div className={styles.board}>
+    <div className={styles.board} role="grid" aria-label="Minesweeper board">
       {board.map((row, rowIdx) =>
         row.map((cell, colIdx) => (
           <Cell

@@ -37,6 +37,7 @@ export default function Cell({ cell, onClick, onRightClick }) {
       onClick={onClick}
       onContextMenu={onRightClick}
       style={numberColor}
+      aria-label={`Cell ${cell.state}`}
     >
       {content}
     </button>
