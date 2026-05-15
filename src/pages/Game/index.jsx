@@ -73,7 +73,7 @@ function Game() {
       title: "Minesweeper by Maria",
       description: "A complete React implementation of Minesweeper with CSS modules and state management.",
       author: "Maria Sechko",
-      link: "sechko-maria", 
+      link: "/sechko-maria", 
       difficulty: "Intermediate",
       status: "Complete"
     }
