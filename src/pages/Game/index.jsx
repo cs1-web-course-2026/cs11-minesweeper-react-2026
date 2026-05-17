@@ -76,6 +76,15 @@ function Game() {
       link: "/kesil-karina",
       difficulty: "Intermediate",
       status: "Complete"
+    },
+    {
+      id: 7,
+      title: "Minesweeper by Humen Valeriia",
+      description: "Classic Minesweeper implementation with React components, dynamic grid, and CSS Modules.",
+      author: "Humen Valeriia",
+      link: "/humen-valeriia",
+      difficulty: "Intermediate",
+      status: "Complete"
     }
   ]
 
