@@ -64,7 +64,7 @@ function Game() {
       title: "Horror Minesweeper", 
       description: "A horror-inspired Minesweeper design with deadly skull mines, pentagram flags, and a crimson glow.",
       author: "Vitaliy Khomchenko",
-      link: "/khomchenko-vitaliy", 
+      link: "khomchenko-vitaliy", 
       difficulty: "Intermediate",
       status: "Complete"
     },
@@ -73,7 +73,16 @@ function Game() {
       title: "Minesweeper by Kesil Karina",
       description: "Classic Minesweeper with timer, flagging, and win/lose detection.",
       author: "Kesil Karina",
-      link: "/kesil-karina",
+      link: "kesil-karina",
+      difficulty: "Intermediate",
+      status: "Complete"
+    },
+    {
+      id: 7,
+      title: "Ретро Сапер",
+      description: "Класичний Сапер на React з використанням компонентного підходу та CSS-модулів.",
+      author: "Руслан Люцканов",
+      link: "liutskanov-ruslan",
       difficulty: "Intermediate",
       status: "Complete"
     }
@@ -119,7 +128,7 @@ function Game() {
                   View Implementation →
                 </a>
               ) : impl.link !== '#' ? (
-                <Link to={`/${impl.link}`} className={styles.linkBtn}>
+                <Link to={impl.link.startsWith('/') ? impl.link : `/${impl.link}`} className={styles.linkBtn}>
                   View Implementation →
                 </Link>
               ) : (
