@@ -70,6 +70,15 @@ function Game() {
     },
     {
       id: 6,
+      title: "Minesweeper by Kesil Karina",
+      description: "Classic Minesweeper with timer, flagging, and win/lose detection.",
+      author: "Kesil Karina",
+      link: "/kesil-karina",
+      difficulty: "Intermediate",
+      status: "Complete"
+    },
+    {
+      id: 7,
       title: "Minesweeper by Maria",
       description: "A complete React implementation of Minesweeper with CSS modules and state management.",
       author: "Maria Sechko",

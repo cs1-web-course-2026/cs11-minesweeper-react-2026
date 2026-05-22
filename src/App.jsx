@@ -6,6 +6,7 @@ import Game from './pages/Game'
 import MockGame from './pages/MockGame'
 import KhomchenkoVitaliy from './pages/KhomchenkoVitaliy'
 import MariaSechko from './pages/SechkoMaria';
+import KesilKarina from './pages/KesilKarina';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="mock-game" element={<MockGame />} />
         <Route path="khomchenko-vitaliy" element={<KhomchenkoVitaliy />} />
         <Route path="sechko-maria" element={<MariaSechko />} />
+        <Route path="kesil-karina" element={<KesilKarina />} />
       </Route>
     </Routes>
   )
