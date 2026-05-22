@@ -1,5 +1,25 @@
 import { CELL_STATE, CELL_CONTENT, GAME_STATUS } from "./constants";
 
+export function createBoard(rows, cols) {
+  const board = [];
+
+  for (let row = 0; row < rows; row++) {
+    const boardRow = [];
+    for (let col = 0; col < cols; col++) {
+      boardRow.push({
+        type: CELL_CONTENT.EMPTY,
+        state: CELL_STATE.CLOSED,
+        neighbourMineCount: 0,
+        isClickedMine: false,
+        isWrongFlag: false,
+      });
+    }
+    board.push(boardRow);
+  }
+
+  return board;
+}
+
 // --------------------------------------------------------------
 // Utility functions for board manipulation and game logic
 export function deepCloneBoard(board) {
