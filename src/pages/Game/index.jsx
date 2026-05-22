@@ -64,7 +64,7 @@ function Game() {
       title: "Horror Minesweeper", 
       description: "A horror-inspired Minesweeper design with deadly skull mines, pentagram flags, and a crimson glow.",
       author: "Vitaliy Khomchenko",
-      link: "/khomchenko-vitaliy", 
+      link: "khomchenko-vitaliy",
       difficulty: "Intermediate",
       status: "Complete"
     },
@@ -73,10 +73,19 @@ function Game() {
       title: "Minesweeper by Kesil Karina",
       description: "Classic Minesweeper with timer, flagging, and win/lose detection.",
       author: "Kesil Karina",
-      link: "/kesil-karina",
+      link: "kesil-karina",
       difficulty: "Intermediate",
       status: "Complete"
-    }
+    },
+    {
+      id: 7,
+      title: "Minesweeper by Mychko Artem",
+      description: "A high-performance Minesweeper implementation built with React.",
+      author: "Mychko Artem",
+      link: "mychko-artem",
+      difficulty: "Intermediate",
+      status: "Complete"
+    },
   ]
 
   return (

@@ -5,7 +5,7 @@ import Timer from './components/Timer/Timer';
 import RestartButton from './components/RestartButton/RestartButton';
 import styles from './index.module.css';
 
-const MychkoArtemGame = () => {
+const MychkoArtem = () => {
     const { state, dispatch } = useMinesweeper({ rows: 10, cols: 10, minesCount: 15 });
     const { field, status, time, flagsPlaced, config } = state;
     const [isModalDismissed, setIsModalDismissed] = useState(false);
@@ -72,4 +72,4 @@ const MychkoArtemGame = () => {
     );
 };
 
-export default MychkoArtemGame;
+export default MychkoArtem;
