@@ -1,0 +1,22 @@
+.button {
+  width: 150px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: lightgray;
+  border-top: 3px solid #ffffff;
+  border-left: 3px solid #ffffff;
+  border-bottom: 3px solid #7b7b7b;
+  border-right: 3px solid #7b7b7b;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  white-space: nowrap;
+}
+
+.button:active {
+  border-top: 3px solid #7b7b7b;
+  border-left: 3px solid #7b7b7b;
+  border-bottom: 3px solid #ffffff;
+  border-right: 3px solid #ffffff;
+}
