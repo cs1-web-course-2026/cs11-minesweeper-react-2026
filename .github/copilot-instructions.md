@@ -617,9 +617,9 @@ named after the student using the `SurnameName` format (e.g. `SmithJohn/`, `Mokh
      file are permitted.
   2. Add one entry to the `implementations` list in `src/pages/Game/index.jsx`. No other
      changes to that file are permitted.
-- Do not modify any other shared files (`src/main.jsx`, `src/global.module.css`,
+- Do not modify any other shared files (`src/main.jsx`, `src/global.css`,
   `index.html`, config files, etc.).
-- Do not add styles to `src/global.module.css` or any other shared stylesheet. All styles
+- Do not add styles to `src/global.css` or any other shared stylesheet. All styles
   must live inside your own `src/pages/{SurnameName}/` folder using CSS Modules.
 
 ### Examples
@@ -677,9 +677,9 @@ When reviewing a pull request, verify all of the following before approving:
    - One entry added to the `implementations` list in `src/pages/Game/index.jsx`. Any other
      change to that file is a **high-severity** issue.
      No other files outside the student's folder should be added, modified, or deleted. Shared
-     infrastructure files (`main.jsx`, `global.module.css`, `vite.config.js`, `package.json`,
+     infrastructure files (`main.jsx`, `global.css`, `vite.config.js`, `package.json`,
      etc.) must not be touched.
-   - If `src/global.module.css` or any other shared stylesheet was modified, flag it as a
+   - If `src/global.css` or any other shared stylesheet was modified, flag it as a
      **high-severity** issue and request changes: all styles must live in the student's own
      CSS Module files inside `src/pages/{SurnameName}/`.
 

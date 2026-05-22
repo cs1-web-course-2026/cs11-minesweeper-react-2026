@@ -103,6 +103,7 @@ If at least one such reply exists, set `author_claims_fixed: true` for that thre
 Pass the same inputs to both:
 
 - PR number
+- `head_sha` (from Step 1 PR metadata — needed to fetch file content at the PR head)
 - The full unified diff text (raw, unprocessed)
 - The full thread list: each thread's `id`, `isResolved`, all comment bodies, `path`, `line`
 - `owner` and `repo`
@@ -116,20 +117,11 @@ Invoke in parallel:
 
 **Wait for BOTH sub-agents to return their full JSON responses before proceeding to Step 3.**
 
-### Step 3 — Merge verdicts with conservative tie-breaking
+### Step 3 — Merge verdicts
 
-For each thread, combine the two verdicts using this priority order:
+Read `.github/skills/pr-comment-followup/merge-rules.md` now and apply it exactly. That file is the single source of truth — do not use any other logic.
 
-| Claude verdict   | Codex verdict    | Merged verdict   |
-| ---------------- | ---------------- | ---------------- |
-| `FIXED`          | `FIXED`          | `FIXED`          |
-| `NOT_APPLICABLE` | `NOT_APPLICABLE` | `NOT_APPLICABLE` |
-| `FIXED`          | `NOT_APPLICABLE` | `FIXED`          |
-| `NOT_APPLICABLE` | `FIXED`          | `FIXED`          |
-| anything         | `NOT_FIXED`      | `NOT_FIXED`      |
-| `NOT_FIXED`      | anything         | `NOT_FIXED`      |
-
-Rule: `NOT_FIXED` beats everything. If neither model reports `NOT_FIXED`, prefer `FIXED` over `NOT_APPLICABLE` for disagreements to avoid incorrectly dismissing comments that may already be addressed.
+Whenever the two sub-agents return **different** verdicts, append `_(disagreement)_` to the merged verdict in the final report.
 
 ### Step 4 — Act on each thread
 
@@ -194,6 +186,25 @@ If the thread is **not resolved and `author_claims_fixed` is `false`**: post a s
 
 ```
 🔁 **[AI Generated] Still open** — This concern does not appear to have been addressed yet. Please revisit the original comment and update the code accordingly before requesting re-review.
+```
+
+#### Merged verdict: `PARTIALLY_FIXED`
+
+Leave the thread in its current resolved/unresolved state — **do not resolve or unresolve**. Post a reply flagging the partial progress and inviting discussion.
+
+**Reply body:**
+
+```
+🔶 **[AI Generated] Partially addressed** — The AI reviewers disagree on whether this concern has been fully resolved. Some progress is visible, but it may not be complete. Please review the original comment and confirm whether the fix covers all cases. A human reviewer should make the final call on this thread.
+```
+
+Post reply via REST:
+
+```bash
+gh api \
+  --method POST \
+  /repos/{owner}/{repo}/pulls/{pr_number}/comments/{first_comment_database_id}/replies \
+  -f body="🔶 **[AI Generated] Partially addressed** — The AI reviewers disagree on whether this concern has been fully resolved. Some progress is visible, but it may not be complete. Please review the original comment and confirm whether the fix covers all cases. A human reviewer should make the final call on this thread."
 ```
 
 #### Merged verdict: `NOT_APPLICABLE`
@@ -285,10 +296,10 @@ Thread 3 — "Outdated concern about variable naming"
   👎 Dismissed + resolved
 
 Thread 4 — "Single-letter variable 'r' used in loop"
-  Claude: not_fixed  ·  Codex: fixed  →  **not_fixed** _(disagreement)_
-  ⏭️ Skipped (still open)
+  Claude: not_fixed  ·  Codex: fixed  →  **partially_fixed** _(disagreement)_
+  🔶 Partial — commented, left open for discussion
 
-**Totals:** {fixed} fixed · {not_fixed_reopened} re-opened · {not_relevant} dismissed · {skipped} skipped
+**Totals:** {fixed} fixed · {partially_fixed} partial · {not_fixed_reopened} re-opened · {not_relevant} dismissed · {skipped} skipped
 ```
 
 Append `_(disagreement)_` to the merged verdict line whenever Claude and Codex produced different verdicts.
