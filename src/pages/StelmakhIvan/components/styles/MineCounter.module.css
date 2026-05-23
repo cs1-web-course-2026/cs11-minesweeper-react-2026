@@ -1,0 +1,38 @@
+.counterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.counterLabel {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.counterValue {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #667eea;
+  min-width: 80px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .counterValue {
+    font-size: 1.5rem;
+    min-width: 70px;
+  }
+
+  .counterLabel {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .counterValue {
+    font-size: 1.3rem;
+  }
+}

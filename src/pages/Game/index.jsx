@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import styles from './Game.module.css'
+import StelmakhIvan from '../StelmakhIvan'
 
 const STATUS_CLASS = {
   'Complete': styles.statusComplete,
@@ -23,6 +24,16 @@ const CARD_STATUS_CLASS = {
 function Game() {
   // Add your implementations here by editing this array
   const implementations = [
+    {
+      id: 15,
+      title: "Ivan's Minesweeper",
+      description: "Stelmakh Ivan's implementation of Minesweeper with simple design and 10x10 field.",
+      author: "Stelmakh Ivan",
+      link: "stelmakh-ivan",
+      difficulty: "Normal",
+      status: "Complete"
+    },
+
     {
       id: 1,
       title: "Mock Minesweeper Game",
@@ -79,6 +90,24 @@ function Game() {
     },
     {
       id: 7,
+      title: "Minesweeper by Humen Valeriia",
+      description: "Classic Minesweeper implementation with React components, dynamic grid, and CSS Modules.",
+      author: "Humen Valeriia",
+      link: "/humen-valeriia",
+      difficulty: "Intermediate",
+      status: "Complete"
+       },
+     {
+      id: 8,
+      title: "Minesweeper by Maria",
+      description: "A complete React implementation of Minesweeper with CSS modules and state management.",
+      author: "Maria Sechko",
+      link: "/sechko-maria", 
+      difficulty: "Intermediate",
+      status: "Complete"
+    },
+    {
+      id: 9,
       title: "Minesweeper by Mychko Artem",
       description: "A high-performance Minesweeper implementation built with React.",
       author: "Mychko Artem",
