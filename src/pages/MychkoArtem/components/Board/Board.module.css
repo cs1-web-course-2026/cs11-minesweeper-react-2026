@@ -1,0 +1,8 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 10), minmax(25px, 40px));
+    grid-template-rows: repeat(var(--rows, 10), minmax(25px, 40px));
+    gap: 3px;
+    max-width: 100%;
+    justify-content: center;
+}
