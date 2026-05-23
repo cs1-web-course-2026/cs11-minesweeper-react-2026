@@ -90,6 +90,15 @@ function Game() {
     },
     {
       id: 7,
+      title: "Minesweeper by Humen Valeriia",
+      description: "Classic Minesweeper implementation with React components, dynamic grid, and CSS Modules.",
+      author: "Humen Valeriia",
+      link: "/humen-valeriia",
+      difficulty: "Intermediate",
+      status: "Complete"
+       },
+     {
+      id: 8,
       title: "Minesweeper by Maria",
       description: "A complete React implementation of Minesweeper with CSS modules and state management.",
       author: "Maria Sechko",
