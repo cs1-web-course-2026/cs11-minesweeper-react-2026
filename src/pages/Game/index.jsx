@@ -115,6 +115,15 @@ function Game() {
       difficulty: "Intermediate",
       status: "Complete"
     },
+    {
+      id: 10,
+      title: "Minesweeper by Snizhana Piatetska",
+      description: "A complete React implementation of Minesweeper with component architecture.",
+      author: "Snizhana Piatetska",
+      link: "piatetska-snizhana",
+      difficulty: "Intermediate",
+      status: "Complete"
+    }
   ]
 
   return (
