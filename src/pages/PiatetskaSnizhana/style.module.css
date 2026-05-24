@@ -1,0 +1,56 @@
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 20px;
+    min-height: 100vh;
+    color: white;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+    background-color: #bdbdbd;
+    padding: 10px;
+    border: 3px solid #7b7b7b;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    margin-bottom: 20px;
+}
+.display {
+    background-color: black;
+    color: red;
+    font-family: monospace;
+    font-size: 24px;
+    padding: 2px 5px;
+}
+.startBtn {
+    font-size: 24px;
+    cursor: pointer;
+}
+.board {
+    display: grid;
+    border: 3px solid #7b7b7b;
+    border-bottom-color: #fff;
+    border-right-color: #fff;
+}
+.cell {
+    width: 30px;
+    height: 30px;
+    background-color: #bdbdbd;
+    border: 2px solid #7b7b7b;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+.cellOpened {
+    background-color: #dcdcdc;
+    border: 1px solid #7b7b7b;
+}
+.mine { background-color: red; }
