@@ -70,7 +70,29 @@ const Minesweeper = () => {
         const targetCell = newField[r][c];
 
         if (targetCell.type === CELL_TYPE.MINE) {
+            handleEndGame(GAME_STATUS.LOSE, newField);
+            return;
+        }
 
+        const reveal = (row, col) => {
+            if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
+            const cell = newField[row][col];
+            if (cell.state === CELL_STATE.OPENED || cell.state === CELL_STATE.FLAGGED) return;
+            cell.state = CELL_STATE.OPENED;
+            if (cell.type === CELL_TYPE.EMPTY && cell.neighborMines === 0) {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        reveal(row + dr, col + dc);
+                    }
+                }
+            }
+        };
+
+        reveal(r, c);
+        newField[r][c] = targetCell;
+        setField(newField);
+        checkWin(newField);
+    };
     const handleRightClick = (r, c) => {
         if (status !== GAME_STATUS.PROCESS) return;
     
