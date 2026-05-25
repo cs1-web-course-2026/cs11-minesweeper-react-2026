@@ -70,40 +70,6 @@ const Minesweeper = () => {
         const targetCell = newField[r][c];
 
         if (targetCell.type === CELL_TYPE.MINE) {
-    const handleCellClick = (r, c) => {
-        if (status !== GAME_STATUS.PROCESS) return;
-        if (!timerActive) setTimerActive(true);
-
-        const newField = field.map(row => row.map(cell => ({ ...cell })));
-        
-        if (newField[r][c].state !== CELL_STATE.CLOSED) return;
-
-        if (newField[r][c].type === CELL_TYPE.MINE) {
-            newField[r][c].state = CELL_STATE.OPENED;
-            handleEndGame(GAME_STATUS.LOSE, newField);
-            return;
-        }
-
-        const reveal = (row, col) => {
-            if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
-            const cell = newField[row][col];
-            if (cell.state !== CELL_STATE.CLOSED) return;
-
-            cell.state = CELL_STATE.OPENED;
-            if (cell.neighborMines === 0) {
-                for (let ro = -1; ro <= 1; ro++) {
-                    for (let co = -1; co <= 1; co++) {
-                        reveal(row + ro, col + co);
-                    }
-                }
-            }
-        };
-
-        reveal(r, c);
-        
-        setField(newField);
-        checkWin(newField);
-    };
 
     const handleRightClick = (r, c) => {
         if (status !== GAME_STATUS.PROCESS) return;
@@ -126,28 +92,6 @@ const Minesweeper = () => {
 
         newField[r][c] = cell;
         setField(newField);
-    };
-
-    const checkWin = (currentField) => {
-        let closedEmpty = 0;
-        currentField.forEach(row => row.forEach(cell => {
-            if (cell.type === CELL_TYPE.EMPTY && cell.state !== CELL_STATE.OPENED) closedEmpty++;
-        }));
-        if (closedEmpty === 0) handleEndGame(GAME_STATUS.WIN, currentField);
-    };
-
-    const handleEndGame = (result, finalField) => {
-        setStatus(result);
-        setTimerActive(false);
-        const revealedField = finalField.map(row => row.map(cell => {
-            if (cell.type === CELL_TYPE.MINE) return { ...cell, state: CELL_STATE.OPENED };
-            return cell;
-        }));
-        setField(revealedField);
-        
-        setTimeout(() => {
-            alert(result === GAME_STATUS.WIN ? `🎉 Перемога! Час: ${formatTime(time)}` : '💥 Бум! Ви програли.');
-        }, 300);
     };
 
     return (
