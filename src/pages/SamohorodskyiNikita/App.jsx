@@ -1,0 +1,1 @@
+<Route path="samohorodskyi-nikita" element={<MinesweeperReact />} />

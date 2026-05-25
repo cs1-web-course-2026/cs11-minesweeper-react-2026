@@ -10,6 +10,7 @@ import MariaSechko from './pages/SechkoMaria';
 import KesilKarina from './pages/KesilKarina';
 import MychkoArtem from './pages/MychkoArtem';
 import HumenValeriiaGame from './pages/HumenValeriia';
+import PiatetskaSnizhana from './pages/PiatetskaSnizhana';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="kesil-karina" element={<KesilKarina />} />
         <Route path="mychko-artem" element={<MychkoArtem />} />
         <Route path="humen-valeriia" element={<HumenValeriiaGame />} />
+        <Route path="piatetska-snizhana" element={<PiatetskaSnizhana />} />
       </Route>
     </Routes>
   )
