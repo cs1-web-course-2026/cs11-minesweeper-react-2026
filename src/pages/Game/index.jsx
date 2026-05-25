@@ -72,7 +72,6 @@ function Game() {
     },
     {
       id: 5,
-<<<<<<< HEAD
       title: "Horror Minesweeper", 
       description: "A horror-inspired Minesweeper design with deadly skull mines, pentagram flags, and a crimson glow.",
       author: "Vitaliy Khomchenko",
@@ -116,15 +115,15 @@ function Game() {
       difficulty: "Intermediate",
       status: "Complete"
     },
-=======
-      title: "Minesweeper Game",
-      description: "Моя реалізація гри Сапер з використанням HTML, CSS та JavaScript.",
-      author: "Sophia Yanchuk",
+    {
+      id: 19,
+      title: "Minesweeper by Sofia Yanchuk",
+      description: "A simple implementation with basic game mechanics",
+      author: "Sofia Yanchuk",
       link: "/yanchuk-sofia",
       difficulty: "Beginner",
       status: "Complete"
     }
->>>>>>> 358b2fd (feat: migrate Minesweeper to React using component architecture)
   ]
 
   return (
