@@ -115,6 +115,15 @@ function Game() {
       difficulty: "Intermediate",
       status: "Complete"
     },
+    {
+      id: 14,
+      title: 'Crimson Minesweeper',
+      description: 'Classic Minesweeper game migrated to React component architecture, featuring a custom crimson design, functional timer, flag counter, and recursive cell clearing.',
+      author: 'Nikita Samohorodskyi',
+      link: 'samohorodskyi-nikita',
+      difficulty: 'Intermediate',
+      status: 'Complete'
+    },
   ]
 
   return (
