@@ -107,16 +107,12 @@ const Minesweeper = () => {
 
     const handleRightClick = (r, c) => {
         if (status !== GAME_STATUS.PROCESS) return;
-        
+    
         const target = field[r][c];
         if (target.state === CELL_STATE.OPENED) return;
 
         const newField = field.map(row => row.map(cell => ({ ...cell })));
         const cell = newField[r][c];
-        const newField = [...field];
-        const cell = { ...newField[r][c] };
-
-        if (cell.state === CELL_STATE.OPENED) return;
 
         if (cell.state === CELL_STATE.FLAGGED) {
             cell.state = CELL_STATE.CLOSED;
@@ -128,11 +124,6 @@ const Minesweeper = () => {
             return;
         }
 
-        setField(newField);
-    };
-
-        }
-        
         newField[r][c] = cell;
         setField(newField);
     };
