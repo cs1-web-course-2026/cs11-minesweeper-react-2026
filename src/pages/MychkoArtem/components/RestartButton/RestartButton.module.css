@@ -1,0 +1,25 @@
+.btnRestart {
+    background-color: #334155;
+    border: none;
+    color: #f8fafc;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    padding: 0;
+}
+
+.btnRestart:hover {
+    background-color: #475569;
+    transform: translateY(-2px);
+}
+
+.btnRestart:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}

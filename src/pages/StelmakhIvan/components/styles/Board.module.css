@@ -1,0 +1,24 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .board {
+    gap: 3px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .board {
+    gap: 2px;
+    padding: 8px;
+  }
+}

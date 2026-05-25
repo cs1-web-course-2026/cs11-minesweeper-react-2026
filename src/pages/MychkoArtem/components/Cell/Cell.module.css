@@ -1,0 +1,57 @@
+.cell {
+    width: 100%;
+    height: 100%;
+    background-color: #334155;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 800;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    color: #f8fafc;
+    padding: 0;
+}
+
+.cell:hover:not(.opened) {
+    background-color: #475569;
+}
+
+.opened {
+    background-color: #0b1120;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5); /* Втиснутий ефект */
+    cursor: default;
+}
+
+.exploded {
+    background-color: #ef4444;
+    box-shadow: 0 0 15px #ef4444;
+    animation: pulse 1.5s infinite;
+}
+
+.mineRevealed {
+    background-color: #0b1120;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+}
+
+.num1 { color: #38bdf8; }
+.num2 { color: #34d399; }
+.num3 { color: #f87171; }
+.num4 { 
+    color: #c084fc; 
+    text-shadow: 0 0 8px rgba(192, 132, 252, 0.4); 
+}
