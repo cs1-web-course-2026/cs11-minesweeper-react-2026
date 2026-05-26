@@ -115,6 +115,15 @@ function Game() {
       difficulty: "Intermediate",
       status: "Complete"
     },
+    {
+      id: 19,
+      title: "Minesweeper by Sofia Yanchuk",
+      description: "A simple implementation with basic game mechanics",
+      author: "Sofia Yanchuk",
+      link: "/yanchuk-sofia",
+      difficulty: "Beginner",
+      status: "Complete"
+    }
   ]
 
   return (

@@ -41,9 +41,9 @@ const Cell = memo(({ data, r, c, onCellClick, onCellFlag }) => {
         return classes.join(' ');
     };
 
-    const handleClick = useCallback((e) => {
-        if (state === 'opened') return;
-        onCellClick(r, c);
+    const handleClick = useCallback(() => {
+    if (state === 'opened') return;
+    onCellClick(r, c);
     }, [r, c, onCellClick, state]);
 
     const handleContextMenu = useCallback((e) => {
