@@ -1,0 +1,57 @@
+.base {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.08s, box-shadow 0.08s;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+  font-size: 20px;
+  padding: 0;
+  background: none;
+  box-sizing: border-box;
+}
+
+.closed {
+  cursor: pointer;
+  background: linear-gradient(145deg, #f0d0e8, #d4a0c0);
+  border-color: #c080a0;
+  box-shadow: 2px 2px 0 #a06080, -1px -1px 0 #ffd0ee;
+}
+
+.closed:active {
+  transform: scale(0.93);
+}
+
+.flagged {
+  cursor: pointer;
+  background: linear-gradient(145deg, #ffe0f4, #ffb0d8);
+  border-color: #ff69b4;
+  font-size: 22px;
+}
+
+.mine {
+  cursor: default;
+  background: linear-gradient(145deg, #ff4444, #990000);
+  border-color: #ff0000;
+  font-size: 22px;
+  animation: bombPop 0.3s ease-out;
+}
+
+.opened {
+  cursor: default;
+  background: #f8eef6;
+  border-color: #c9a0bc;
+}
+
+@keyframes bombPop { 
+  0%   { transform: scale(0.5); opacity: 0; } 
+  60%  { transform: scale(1.2); } 
+  100% { transform: scale(1); opacity: 1; } 
+}
