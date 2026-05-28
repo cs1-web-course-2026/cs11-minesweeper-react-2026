@@ -1,0 +1,19 @@
+.display {
+  display: flex;
+  gap: 2px;
+  background: #1a0a1a;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 2px inset #6b0059;
+  font-family: 'Courier New', monospace;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ff3cac;
+  text-shadow: 0 0 8px #ff3cac, 0 0 20px #ff3cac66;
+}
+
+.digit {
+  min-width: 18px;
+  text-align: center;
+}

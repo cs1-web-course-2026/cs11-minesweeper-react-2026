@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&display=swap');
+
+.container {
+  width: 520px;
+  background: linear-gradient(160deg, #2d0030 0%, #1a0020 60%, #0d0015 100%);
+  border-radius: 28px;
+  border: 2px solid #8b008b;
+  box-shadow: 0 0 60px #ff3cac44, 0 0 120px #8b008b22, inset 0 1px 0 #ff69b455;
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.titleContainer {
+  text-align: center;
+}
+
+.title {
+  font-family: 'Black Ops One', serif;
+  font-size: 38px;
+  letter-spacing: 4px;
+  color: #ff3cac;
+  animation: titleGlow 2.5s ease-in-out infinite;
+}
+
+.infoBar {
+  background: #120018;
+  border-radius: 14px;
+  border: 1.5px solid #6b0059;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resetBtn {
+  font-size: 36px;
+  cursor: pointer;
+  transition: transform 0.15s;
+  filter: drop-shadow(0 0 6px #ff3cac88);
+  background: none;
+  border: none;
+}
+
+.resetBtn:hover {
+  transform: scale(1.15) rotate(-10deg);
+}
+
+.flagRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 4px;
+}
+
+.flagText {
+  color: #d080b8;
+  font-size: 15px;
+}
+
+.flagCount {
+  color: #ff3cac;
+  font-weight: 700;
+}
+
+.startBtn {
+  background: linear-gradient(135deg, #8b0070, #500040);
+  color: #ffd0ee;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: 1.5px solid #ff3cac55;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px #ff3cac33;
+}
+
+.startBtn:hover {
+  background: linear-gradient(135deg, #aa0090, #700060);
+  box-shadow: 0 4px 20px #ff3cac66;
+}
+
+.message {
+  text-align: center;
+  height: 28px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.msgLost {
+  color: #ff4444;
+}
+
+.msgWon {
+  color: #66ff99;
+}
+
+.msgPulse {
+  animation: msgPulse 0.8s ease-in-out infinite;
+}
+
+.grid {
+  background: #0e0018;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1.5px solid #6b0059;
+  box-shadow: inset 0 0 30px #2d003055;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+@keyframes bombPop { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
+@keyframes msgPulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+@keyframes titleGlow {
+  0%,100% { text-shadow: 0 0 10px #ff3cac, 0 0 30px #ff3cac88, 0 0 60px #ff3cac44; }
+  50%      { text-shadow: 0 0 20px #ff3cac, 0 0 50px #ff3cacaa, 0 0 80px #ff3cac66; }
+}

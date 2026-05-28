@@ -123,6 +123,15 @@ function Game() {
       link: "/yanchuk-sofia",
       difficulty: "Beginner",
       status: "Complete"
+    },
+    {
+      id: 13,
+      title: "Neon Minesweeper",
+      description: "React implementation of Minesweeper with a neon visual style, 10x10 grid, custom digital displays, and inline CSS animations.",
+      author: "Prudnik Anastasiia",
+      link: "prudnik-anastasiia",
+      difficulty: "Intermediate",
+      status: "Complete"
     }
   ]
 
