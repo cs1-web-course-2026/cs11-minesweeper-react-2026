@@ -1,0 +1,18 @@
+.status {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 24px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.win {
+  background-color: #1b5e20;
+  color: #a5d6a7;
+}
+
+.lose {
+  background-color: #b71c1c;
+  color: #ffcdd2;
+}
