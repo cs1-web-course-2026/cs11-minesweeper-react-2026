@@ -116,6 +116,15 @@ function Game() {
       status: "Complete"
     },
     {
+      id: 10,
+      title: "Minesweeper by Medvediev Anton",
+      description: "The best minesweeper ever based on React (Work in progress)",
+      author: "Medvediev Anton",
+      link: "medvediev-anton",
+      difficulty: "Intermediate",
+      status: "In Progress"
+    },
+    {
       id: 19,
       title: "Minesweeper by Sofia Yanchuk",
       description: "A simple implementation with basic game mechanics",

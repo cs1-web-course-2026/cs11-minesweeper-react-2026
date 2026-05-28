@@ -1,0 +1,32 @@
+.cell {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+    font-size: 18px;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: 0.2s;
+}
+
+.closed {
+    background-color: #5c6bc0;
+    border: 2px solid #7986cb;
+}
+
+.opened {
+    background-color: #d1d1d1;
+    color: black;
+}
+
+.flagged {
+    background-color: #ffca28;
+}
