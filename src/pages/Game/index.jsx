@@ -123,6 +123,15 @@ function Game() {
       link: "/yanchuk-sofia",
       difficulty: "Beginner",
       status: "Complete"
+    },
+    {
+      id: 20,
+      title: "Minesweeper by Chernyshev Oleh",
+      description: "React Minesweeper implementation with component structure, state management, timer, flagging, and CSS Modules.",
+      author: "Chernyshev Oleh",
+      link: "/chernyshev-oleh",
+      difficulty: "Intermediate",
+      status: "Complete"
     }
   ]
 
